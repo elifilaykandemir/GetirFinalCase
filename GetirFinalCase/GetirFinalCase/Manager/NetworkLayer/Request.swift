@@ -12,7 +12,6 @@ protocol Request {
     var baseUrl: String {get}
     var path: String {get}
     var method: HTTPMethod {get set}
-    //var queryItems
 }
 
 enum HTTPMethod: String {

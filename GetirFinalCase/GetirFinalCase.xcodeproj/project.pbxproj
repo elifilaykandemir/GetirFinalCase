@@ -20,6 +20,9 @@
 		FC7F5D022BCD232900EFE42B /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7F5D012BCD232900EFE42B /* ProductDetailViewController.swift */; };
 		FC7F5D042BCD233600EFE42B /* BasketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7F5D032BCD233600EFE42B /* BasketViewController.swift */; };
 		FC7F5D082BCDD6B500EFE42B /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7F5D072BCDD6B500EFE42B /* String+Extension.swift */; };
+		FC7F5D0A2BCEA03700EFE42B /* BasketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7F5D092BCEA03700EFE42B /* BasketManager.swift */; };
+		FC7F5D0C2BCEA08B00EFE42B /* Notification.Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7F5D0B2BCEA08B00EFE42B /* Notification.Name.swift */; };
+		FC7F5D0E2BCEB45200EFE42B /* StepperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7F5D0D2BCEB45200EFE42B /* StepperManager.swift */; };
 		FC840E462BC559810016A555 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC840E452BC559810016A555 /* AppDelegate.swift */; };
 		FC840E482BC559810016A555 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC840E472BC559810016A555 /* SceneDelegate.swift */; };
 		FC840E4A2BC559810016A555 /* ProductListingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC840E492BC559810016A555 /* ProductListingView.swift */; };
@@ -72,6 +75,9 @@
 		FC7F5D012BCD232900EFE42B /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		FC7F5D032BCD233600EFE42B /* BasketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketViewController.swift; sourceTree = "<group>"; };
 		FC7F5D072BCDD6B500EFE42B /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		FC7F5D092BCEA03700EFE42B /* BasketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketManager.swift; sourceTree = "<group>"; };
+		FC7F5D0B2BCEA08B00EFE42B /* Notification.Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.Name.swift; sourceTree = "<group>"; };
+		FC7F5D0D2BCEB45200EFE42B /* StepperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepperManager.swift; sourceTree = "<group>"; };
 		FC840E422BC559810016A555 /* GetirFinalCase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GetirFinalCase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC840E452BC559810016A555 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FC840E472BC559810016A555 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -219,6 +225,7 @@
 				FC7F5CF92BCB2AB800EFE42B /* UILabel+Extension.swift */,
 				FC7F5CFF2BCC7BA100EFE42B /* UIButton+Extension.swift */,
 				FC7F5D072BCDD6B500EFE42B /* String+Extension.swift */,
+				FC7F5D0B2BCEA08B00EFE42B /* Notification.Name.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -239,6 +246,8 @@
 		FC840E7C2BC55ADC0016A555 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				FC7F5D092BCEA03700EFE42B /* BasketManager.swift */,
+				FC7F5D0D2BCEB45200EFE42B /* StepperManager.swift */,
 				FC7F5CF22BCB113100EFE42B /* NetworkLayer */,
 			);
 			path = Manager;
@@ -437,6 +446,8 @@
 				FC840E892BC55D240016A555 /* ProductListingRouter.swift in Sources */,
 				FC840E852BC55CFE0016A555 /* ProductListingInteractor.swift in Sources */,
 				FC7F5CEA2BC89CEF00EFE42B /* LayoutBuilder.swift in Sources */,
+				FC7F5D0C2BCEA08B00EFE42B /* Notification.Name.swift in Sources */,
+				FC7F5D0A2BCEA03700EFE42B /* BasketManager.swift in Sources */,
 				FC840E4A2BC559810016A555 /* ProductListingView.swift in Sources */,
 				FC840E832BC55CEB0016A555 /* ProductListingPresenter.swift in Sources */,
 				FC7F5D022BCD232900EFE42B /* ProductDetailViewController.swift in Sources */,
@@ -447,6 +458,7 @@
 				FC89801F2BC757B1004250DB /* PlusButton.swift in Sources */,
 				FC840E462BC559810016A555 /* AppDelegate.swift in Sources */,
 				FC89801B2BC73889004250DB /* ProductCellPresenter.swift in Sources */,
+				FC7F5D0E2BCEB45200EFE42B /* StepperManager.swift in Sources */,
 				FC7F5CFA2BCB2AB800EFE42B /* UILabel+Extension.swift in Sources */,
 				FC840E482BC559810016A555 /* SceneDelegate.swift in Sources */,
 			);

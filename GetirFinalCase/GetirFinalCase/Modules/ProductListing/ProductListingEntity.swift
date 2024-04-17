@@ -63,14 +63,6 @@ struct Product: Codable {
         }
 }
 
-
-struct Cart {
-    var products: [Product]
-    var totalAmount: Double {
-        return products.reduce(0) { $0 + $1.price }
-    }
-}
-
 struct ImageData {
     let url: URL
     var data: Data?

@@ -26,15 +26,18 @@ final class ProductListingViewController: UIViewController {
     private lazy var customNavBar = CustomNavigationBar(title: "Ürünler", showCloseButton: false)
     private lazy var collectionView = UICollectionView()
     static let background = "background-element-kind"
+    private lazy var cartButton : CartButton = {
+        let button = CartButton()
+        button.addTarget(self, action: #selector(cartButtonTapped), for: .touchUpInside)
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.viewDidLoad()
         configureNavigationBarAppearance(color: .primary)
-
     }
-
-
+    
 }
 
 extension ProductListingViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -54,8 +57,6 @@ extension ProductListingViewController: UICollectionViewDataSource, UICollection
             cell.presenter = ProductCellPresenter(view: cell, product: product, images: image)
             
         }
-    
-        
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -127,8 +128,6 @@ extension ProductListingViewController: ProductListingViewProtocol {
     
     
     func setupNavBar(){
-        lazy var cartButton = CartButton()
-        cartButton.addTarget(self, action: #selector(cartButtonTapped), for: .touchUpInside)
         let cartBarButtonItem = UIBarButtonItem(customView: cartButton)
         self.navigationItem.rightBarButtonItem = cartBarButtonItem
         self.navigationItem.titleView = customNavBar
@@ -140,10 +139,13 @@ extension ProductListingViewController: ProductListingViewProtocol {
     }
     
     func refreshCartAmount(_ amount: Double) {
-        print("")
+        let formattedAmount = String(format: "₺%.2f", amount)
+        DispatchQueue.main.async {
+            if let cartButton = self.navigationItem.rightBarButtonItem?.customView as? CartButton {
+                cartButton.updatePrice(to: formattedAmount)
+            }
+        }
     }
-    
-    
     @objc func cartButtonTapped() {
         presenter.didTapCartButton()
     }

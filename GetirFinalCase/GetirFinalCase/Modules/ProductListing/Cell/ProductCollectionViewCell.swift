@@ -13,6 +13,7 @@ protocol ProductCellProtocol: AnyObject {
     func setProductNameLabel(_ text: String)
     func setAttributeLabel(_ text: String)
     func setStepperState(isExpanded: Bool, quantity: Int)
+    func setProductID(_ id: String)
 }
 
 final class ProductCollectionViewCell: UICollectionViewCell {
@@ -23,13 +24,15 @@ final class ProductCollectionViewCell: UICollectionViewCell {
             presenter.load()
         }
     }
-    private lazy var stepperButton = ExpandableButton()
+    lazy var stepperButton : ExpandableButton = {
+        let button = ExpandableButton()
+        return button
+    }()
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.image = UIImage(named: "default")
         imageView.layer.cornerRadius = 10
         imageView.layer.borderWidth = 1
         imageView.layer.borderColor = UIColor.primaryGray.cgColor
@@ -80,6 +83,7 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         setupCell()
         presenter?.load()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -100,7 +104,7 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor)
         ])
-
+        
         stepperButton.setupConstraints(
             topAnchor: imageView.topAnchor,topConstant: -10,
             trailingAnchor: imageView.trailingAnchor,trailingConstant: 10
@@ -112,7 +116,7 @@ final class ProductCollectionViewCell: UICollectionViewCell {
             trailingAnchor: contentView.trailingAnchor,trailingConstant: -10,
             bottomAnchor: contentView.bottomAnchor,bottomConstant: -8
         )
-     
+        
     }
     
     override func prepareForReuse() {
@@ -121,12 +125,14 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         priceLabel.text = nil
         productNameLabel.text = nil
         attributeLabel.text = nil
-      
+        NotificationCenter.default.removeObserver(self)
+        stepperButton.reset()
+        
     }
-  
+    
 }
 
-extension ProductCollectionViewCell: ProductCellProtocol{
+extension ProductCollectionViewCell: ProductCellProtocol {
     
     func setImage(_ imageData: Data?) {
         DispatchQueue.main.async {
@@ -149,23 +155,27 @@ extension ProductCollectionViewCell: ProductCellProtocol{
     func setAttributeLabel(_ text: String) {
         attributeLabel.text = text
     }
-    func setStepperState(isExpanded: Bool, quantity: Int) {
-            // ExpandableButton'unuzu burada konfigüre edin
-            stepperButton.isExpanded = isExpanded
-            stepperButton.count = quantity
-        }
+    func setProductID(_ id: String) {
+        stepperButton.productId = id
+    }
+    
+    
 }
-
 extension ProductCollectionViewCell: ExpandableButtonDelegate {
+    
     func didTapButton(with isExpanded: Bool) {
-        if isExpanded {
-            imageView.layer.borderColor = UIColor.primary.cgColor
-        } else{
-            imageView.layer.borderColor = UIColor.primaryGray.cgColor
-        }
+        updateBorderFor(isExpanded: isExpanded)
+        
     }
-    func didChangeQuantity(to quantity: Int) {
-       
+    private func updateBorderFor(isExpanded: Bool) {
+        imageView.layer.borderColor = isExpanded ? UIColor.primary.cgColor : UIColor.primaryGray.cgColor
     }
- 
+    
+    func setStepperState(isExpanded: Bool, quantity: Int) {
+        stepperButton.isExpanded = isExpanded
+        stepperButton.count = quantity
+        
+        
+    }
+    
 }

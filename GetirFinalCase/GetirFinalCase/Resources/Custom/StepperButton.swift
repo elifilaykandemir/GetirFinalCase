@@ -1,28 +1,31 @@
 import UIKit
 
 protocol ExpandableButtonDelegate: AnyObject {
-    func didChangeQuantity(to quantity: Int)
     func didTapButton(with: Bool)
 }
 class ExpandableButton: UIView {
     
+    var productId: String = ""
+    
     var isExpanded: Bool = false {
         didSet {
+            updateButtonAppearance()
+            adjustButtonTargets()
+        }
+    }
+    var count: Int {
+        get { StepperCountManager.shared.getCount(for: productId) }
+        set {
+            StepperCountManager.shared.setCount(for: productId, to: newValue)
             updateButtonAppearance()
         }
     }
     
-    var count: Int = 0 {
-        didSet {
-            updateButtonAppearance()
-            delegate?.didChangeQuantity(to: count)
-        }
-    }
     weak var delegate: ExpandableButtonDelegate?
     
     private lazy var plusButton: CustomButton = {
         let button = CustomButton(frame: .zero, icon: "plus")
-        button.addTarget(self, action: #selector(toggleExpandCollapse), for: .touchUpInside)
+        button.addTarget(self, action: #selector(initialExpand), for: .touchUpInside)
         return button
     }()
     
@@ -50,66 +53,82 @@ class ExpandableButton: UIView {
         stackView.addArrangedSubview(countLabel)
         stackView.addArrangedSubview(trashButton)
         return stackView
-      }()
-
-      private lazy var containerStackView: UIStackView = {
+    }()
+    
+    private lazy var containerStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.addArrangedSubview(plusButton)
         stackView.addArrangedSubview(expandedStackView)
         return stackView
-      }()
+    }()
     
-
+    
     override init(frame: CGRect) {
-       super.init(frame: frame)
+        super.init(frame: frame)
         setupStackView()
         setupConstraints()
-     }
+    }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    @objc private func toggleExpandCollapse() {
-        
-        if !isExpanded {
-            isExpanded = true
-            delegate?.didTapButton(with:isExpanded)
-            if count == 0 {
-                count = 1
-            }
-        } else {
-            increaseCount()
-        }
-        
+    
+    @objc private func initialExpand() {
+        isExpanded = true
+        count = 1
+        delegate?.didTapButton(with: isExpanded)
         updateExpandAnimation()
     }
-
+    
+    
+    @objc private func toggleExpandCollapse() {
+        increaseCount()
+        
+    }
+    
     @objc private func increaseCount() {
-        count += 1
+        StepperCountManager.shared.incrementCount(for: productId)
         updateButtonAppearance()
     }
-
+    
     @objc private func decreaseCount() {
-        count -= 1
+        StepperCountManager.shared.decrementCount(for: productId)
+        print(productId)
+        let updatedCount = StepperCountManager.shared.getCount(for: productId)
+        count = updatedCount
+        
         if count <= 0 {
-                trashButtonTapped()
-            } else {
-                updateButtonAppearance()
-            }
+            trashButtonTapped()
+        } else {
+            updateButtonAppearance()
+        }
     }
-
+    
     @objc private func trashButtonTapped() {
+        StepperCountManager.shared.decrementCount(for: productId)
+        
+        let updatedCount = StepperCountManager.shared.getCount(for: productId)
+        count = updatedCount
         if count <= 1 {
-                isExpanded = false
-                count = 0
-                updateExpandAnimation()
+            isExpanded = false
+            count = 0
+            updateExpandAnimation()
             delegate?.didTapButton(with: isExpanded)
-            } else {
-                decreaseCount()
-            }
+        } else {
+            decreaseCount()
+        }
+        
     }
-
+    
+    private func adjustButtonTargets() {
+        plusButton.removeTarget(nil, action: nil, for: .allEvents)
+        if isExpanded {
+            plusButton.addTarget(self, action: #selector(toggleExpandCollapse), for: .touchUpInside)
+        } else {
+            plusButton.addTarget(self, action: #selector(initialExpand), for: .touchUpInside)
+        }
+    }
+    
     private func updateExpandAnimation() {
         UIView.animate(withDuration: 0.3, animations: {
             self.expandedStackView.isHidden = !self.isExpanded
@@ -125,25 +144,25 @@ class ExpandableButton: UIView {
             self.layoutIfNeeded()
         })
     }
-
+    
     private func updateButtonAppearance() {
         let symbol = count > 1 ? "minus" : "trash"
         let config = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold)
         let icon = UIImage(systemName: symbol, withConfiguration: config)
         trashButton.setImage(icon, for: .normal)
         trashButton.tintColor = .primary
-      
+        
         countLabel.text = "\(count)"
         countLabel.alpha = isExpanded ? 1 : 0
         trashButton.alpha = isExpanded && count > 0 ? 1 : 0
     }
-  
-
+    
+    
     private func setupStackView() {
         addSubview(containerStackView)
         
     }
-
+    
     private func setupConstraints() {
         plusButton.setupConstraints(
             width: 30,
@@ -153,7 +172,7 @@ class ExpandableButton: UIView {
             width: 30,
             height: 30
         )
-
+        
         trashButton.setupConstraints(
             width: 30,
             height: 30
@@ -165,5 +184,23 @@ class ExpandableButton: UIView {
             bottomAnchor: bottomAnchor
         )
     }
+    
 }
+extension ExpandableButton {
+    func reset() {
+        count = 0
+        isExpanded = false
+        updateButtonAppearance()
+        updateExpandAnimation()
+    }
+    func showCountLabel() {
+        countLabel.isHidden = false
+    }
+    
+    func hideCountLabel() {
+        countLabel.isHidden = true
+    }
+}
+
+
 

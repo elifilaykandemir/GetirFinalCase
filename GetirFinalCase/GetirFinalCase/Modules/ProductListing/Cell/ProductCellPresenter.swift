@@ -25,16 +25,23 @@ final class ProductCellPresenter {
         
     }
     
+    func getProduct() -> Product {
+           return product
+       }
+    
 }
 extension ProductCellPresenter: ProductCellPresenterProtocol {
  
     func load() {
-        view?.setStepperState(isExpanded: product.isExpanded, quantity: product.quantity)
+        
         self.view?.setImage(images.data)
         self.view?.setPriceLabel(product.price)
         self.view?.setProductNameLabel(product.name)
         self.view?.setAttributeLabel(product.attribute ?? "")
-        
+        self.view?.setProductID(product.id)
+        let currentCount = StepperCountManager.shared.getCount(for: product.id)
+        self.view?.setStepperState(isExpanded: currentCount > 0, quantity: currentCount)
     }
+
     
 }

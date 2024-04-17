@@ -11,8 +11,9 @@ protocol ProductListingPresenterProtocol: AnyObject {
     func viewDidLoad()
     func numberOfItems() -> Int
     func product(_ index: Int) -> Product?
-    func cartUpdated(with: Cart)
+    func cartUpdated(_ price:Double)
     func didSelectProduct(at index: Int)
+    
 }
 
 final class ProductListingPresenter {
@@ -21,7 +22,6 @@ final class ProductListingPresenter {
     var router: ProductListingRouterProtocol?
     
     private var products: [Product] = []
-    private var cart = Cart(products: [])
     private var productImages: [ImageData] = []
     
     init(view: ProductListingViewProtocol,
@@ -32,12 +32,22 @@ final class ProductListingPresenter {
         self.router = router
         self.interactor = interactor
     }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
 extension ProductListingPresenter: ProductListingPresenterProtocol{
+    
     func product(_ index: Int) -> Product? {
-        products[index]
+        print("\(products[index])")
+        return products[index]
     }
+    private func product(withID productId: String) -> Product? {
+        return products.first { $0.id == productId }
+    }
+    
     func productImage(_ index: Int) -> ImageData? {
         productImages[index]
     }
@@ -45,14 +55,39 @@ extension ProductListingPresenter: ProductListingPresenterProtocol{
     func numberOfItems() -> Int {
         return products.count
     }
-    
+    @objc private func handleStepperChange(_ notification: Notification) {
+        guard let productId = notification.userInfo?["productId"] as? String,
+              let newCount = notification.userInfo?["newCount"] as? Int,
+              let product = product(withID: productId) else {
+            return
+        }
+        
+        if newCount > 0 {
+            var updatedProduct = product
+            updatedProduct.quantity = newCount
+            BasketManager.shared.addProduct(updatedProduct)
+        } else {
+            BasketManager.shared.removeProduct(product)
+        }
+        DispatchQueue.main.async {
+            self.view?.refreshCartAmount(BasketManager.shared.total)
+        }
+        
+    }
+    @objc private func basketUpdated(notification: Notification) {
+        if let newPrice = notification.userInfo?["newPrice"] as? Double {
+            cartUpdated(newPrice)
+        }
+    }
     
     func viewDidLoad() {
         fetchProduct()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleStepperChange(_:)), name: .stepperCountDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(basketUpdated), name: .basketDidUpdate, object: nil)
         view?.setupNavBar()
         view?.configureCollectionView()
+        
     }
-    
     
     func didSelectProduct(at index: Int) {
         router?.navigate(.detail)
@@ -63,13 +98,11 @@ extension ProductListingPresenter: ProductListingPresenterProtocol{
     }
     
     
-    func addProductToCart(_ product: Product) {
-        cart.products.append(product)
-        //view?.updateCartDisplay(cart)
-    }
-    
-    func cartUpdated(with cart: Cart) {
-        view?.refreshCartAmount(cart.totalAmount)
+    func cartUpdated(_ price:Double) {
+        DispatchQueue.main.async { [weak self] in
+            self?.view?.refreshCartAmount(price)
+        }
+        
     }
     
     func fetchProduct(){
@@ -84,17 +117,11 @@ extension ProductListingPresenter: ProductListingInteractorOutput {
     func productsFetchedSuccessfully(_ products: [Product], imageData: [ImageData]) {
         self.products = products
         self.productImages = imageData
-        print(self.products)
-        print(self.productImages)
         view?.reloadProductList()
     }
     
     func productsFetchFailed(withError: Error) {
         print("\(withError)")
     }
-    
-  
-    
-
     
 }

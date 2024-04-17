@@ -10,7 +10,6 @@ class CartButton: UIButton {
     
     private lazy var priceLabel : UILabel = {
         let label = UILabel()
-        label.text = "₺100,00"
         label.textColor = .primary
         label.backgroundColor = .primaryGray
         label.clipsToBounds = true
@@ -62,7 +61,9 @@ class CartButton: UIButton {
         )
     }
     func updatePrice(to newPrice: String) {
-        priceLabel.text = newPrice
+        DispatchQueue.main.async {
+            self.priceLabel.text = newPrice
+        }
     }
 }
 
