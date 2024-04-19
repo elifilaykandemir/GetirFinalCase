@@ -68,9 +68,6 @@ extension ProductListingPresenter: ProductListingPresenterProtocol{
         } else {
             BasketManager.shared.removeProduct(product)
         }
-//        DispatchQueue.main.async {
-//            self.view?.refreshCartAmount(BasketManager.shared.total)
-//        }
         
     }
     @objc private func basketUpdated(notification: Notification) {
@@ -92,7 +89,6 @@ extension ProductListingPresenter: ProductListingPresenterProtocol{
         guard index < products.count, index < productImages.count else { return }
         let product = products[index]
         let imageData = productImages[index]
-        //router?.navigate(.detail(product))
         router?.navigate(.detail(product: product, imageData: imageData))
         
     }

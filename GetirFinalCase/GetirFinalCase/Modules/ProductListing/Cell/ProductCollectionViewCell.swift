@@ -127,9 +127,7 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         attributeLabel.text = nil
         NotificationCenter.default.removeObserver(self)
         stepperButton.reset()
-        
     }
-    
 }
 
 extension ProductCollectionViewCell: ProductCellProtocol {
@@ -175,7 +173,5 @@ extension ProductCollectionViewCell: ExpandableButtonDelegate {
         stepperButton.isExpanded = isExpanded
         stepperButton.count = quantity
         
-        
     }
-    
 }

@@ -23,9 +23,6 @@ final class ProductDetailInteractor {
 
 extension ProductDetailInteractor: ProductDetailInteractorProtocol {
     func takeProductID() {
-       
+        
     }
-    
-  
-    
 }

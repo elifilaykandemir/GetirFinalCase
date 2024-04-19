@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 protocol ProductDetailViewProtocol: AnyObject {
     func displayProductDetail(priceText: String, productText: String, attText: String)
     func setImage(image:Data)
@@ -77,23 +76,21 @@ final class ProductDetailViewController: UIViewController {
             bottomAnchor: customView.bottomAnchor
         )
     }
-
 }
-
 extension ProductDetailViewController : ProductDetailViewProtocol {
     func imageNotFound() {
         contentView.setImage(UIImage(named: "defaultImage")?.pngData())
     }
     
-
     func displayProductDetail( priceText: String, productText: String, attText: String) {
         contentView.configureView(priceText: priceText, productText: productText, attirubuteText: attText
         )
-       
     }
+    
     func setImage(image:Data) {
         contentView.setImage(image)
     }
+    
     func refreshCartAmount(_ amount: Double) {
         DispatchQueue.main.async { [weak self] in
             self?.customNavBar.updateCartAmount(to: amount)
@@ -106,14 +103,15 @@ extension ProductDetailViewController : ProductDetailViewProtocol {
             self?.presenter.didTapCart()
         }
     }
+    
     func addToBasketButtonAction(){
         addBasketView.onAddBasketButtonTapped = { [weak self] in
             self?.presenter.didTapAddBasket()
         }
     }
+    
     func closeButtonAction(){
         customNavBar.onCloseTapped = { [weak self] in
-            print("Burada çalıştı")
             self?.presenter.didTapClose()
         }
     }

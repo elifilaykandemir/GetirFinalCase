@@ -10,7 +10,6 @@ import UIKit
 class AddBasketView: UIView {
     
     var onAddBasketButtonTapped: (() -> Void)?
-
     
     private lazy var addBasketButton: UIButton = {
         let button = UIButton(type: .system)
@@ -58,8 +57,6 @@ class AddBasketView: UIView {
             bottomAnchor: bottomAnchor, bottomConstant: -40,
             centerXAnchor:centerXAnchor
         )
-        
-        
     }
     @objc func addToBasketButtonTapped(){
         addBasketButton.isHidden = true
