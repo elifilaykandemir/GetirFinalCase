@@ -22,24 +22,19 @@ protocol ProductListingViewProtocol: AnyObject {
 final class ProductListingViewController: UIViewController {
     
     var presenter: ProductListingPresenter!
-    
+  
     private lazy var customNavBar = CustomNavigationBar(title: "Ürünler", showCloseButton: false)
     private lazy var collectionView = UICollectionView()
     static let background = "background-element-kind"
-    private lazy var cartButton : CartButton = {
-        let button = CartButton()
-        button.addTarget(self, action: #selector(cartButtonTapped), for: .touchUpInside)
-        return button
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .primary
+        setupConstraint()
         presenter.viewDidLoad()
-        configureNavigationBarAppearance(color: .primary)
+        
     }
-    
 }
-
 extension ProductListingViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
@@ -116,21 +111,39 @@ extension ProductListingViewController {
 extension ProductListingViewController: ProductListingViewProtocol {
     
     func configureCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = .systemBackground
         collectionView.register(ProductCollectionViewCell.self, forCellWithReuseIdentifier: ProductCollectionViewCell.identifier)
         view.addSubview(collectionView)
-        collectionView.backgroundColor = .systemGray4
+        collectionView.setupConstraints(
+            leadingAnchor:view.leadingAnchor,
+            topAnchor: customNavBar.bottomAnchor,
+            topConstant: 16,
+            trailingAnchor: view.trailingAnchor,
+            bottomAnchor: view.bottomAnchor
+        )
+        collectionView.backgroundColor = .systemGray6
         collectionView.delegate = self
         collectionView.dataSource = self
+        
     }
-    
-    
-    func setupNavBar(){
-        let cartBarButtonItem = UIBarButtonItem(customView: cartButton)
-        self.navigationItem.rightBarButtonItem = cartBarButtonItem
-        self.navigationItem.titleView = customNavBar
+
+    func setupConstraint(){
+
+        view.addSubview(customNavBar)
+        customNavBar.setupConstraints(
+            leadingAnchor: view.leadingAnchor,
+            topAnchor: view.safeAreaLayoutGuide.topAnchor,
+            trailingAnchor: view.trailingAnchor,
+            height: 24
+        )
+        
+    }
+    func setupNavBar() {
+        customNavBar.onCartButtonTapped = { [weak self] in
+            self?.cartButtonTapped()
+        }
     }
     func reloadProductList() {
         DispatchQueue.main.async {
@@ -139,14 +152,11 @@ extension ProductListingViewController: ProductListingViewProtocol {
     }
     
     func refreshCartAmount(_ amount: Double) {
-        let formattedAmount = String(format: "₺%.2f", amount)
-        DispatchQueue.main.async {
-            if let cartButton = self.navigationItem.rightBarButtonItem?.customView as? CartButton {
-                cartButton.updatePrice(to: formattedAmount)
-            }
+        DispatchQueue.main.async { [weak self] in
+            self?.customNavBar.updateCartAmount(to: amount)
         }
     }
-    @objc func cartButtonTapped() {
+    func cartButtonTapped() {
         presenter.didTapCartButton()
     }
     

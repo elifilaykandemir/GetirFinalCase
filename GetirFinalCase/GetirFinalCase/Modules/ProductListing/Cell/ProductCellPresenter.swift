@@ -9,7 +9,6 @@ import Foundation
 
 protocol ProductCellPresenterProtocol: AnyObject {
     func load()
-    //func updateQuantity(with count: Int)
 }
 
 final class ProductCellPresenter {

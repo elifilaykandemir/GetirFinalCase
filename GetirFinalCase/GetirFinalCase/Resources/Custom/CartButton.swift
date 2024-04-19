@@ -5,18 +5,19 @@ class CartButton: UIButton {
     private lazy var iconImageView : UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "basket", withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .bold))?.withTintColor(.primary, renderingMode: .alwaysOriginal)
+        
         return imageView
     }()
     
     private lazy var priceLabel : UILabel = {
         let label = UILabel()
-        label.textColor = .primary
+        label.textColor = UIColor.primary
         label.backgroundColor = .primaryGray
         label.clipsToBounds = true
         label.layer.cornerRadius = 5
         label.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
-        label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         label.textAlignment = .center
+        label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         return label
     }()
@@ -26,6 +27,7 @@ class CartButton: UIButton {
         stackView.axis = .horizontal
         stackView.spacing = 8
         stackView.alignment = .center
+
         return stackView
     }()
     
@@ -60,9 +62,11 @@ class CartButton: UIButton {
             bottomAnchor: bottomAnchor,bottomConstant: -5
         )
     }
+   
     func updatePrice(to newPrice: String) {
         DispatchQueue.main.async {
             self.priceLabel.text = newPrice
+            self.priceLabel.sizeToFit()
         }
     }
 }

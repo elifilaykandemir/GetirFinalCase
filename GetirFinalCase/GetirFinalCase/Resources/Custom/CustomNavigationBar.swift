@@ -2,62 +2,90 @@
 //  CustonNavigationBar.swift
 //  GetirFinalCase
 //
-//  Created by Elif İlay KANDEMİR on 9.04.2024.
+//  Created by Elif İlay KANDEMİR on 18.04.2024.
 //
-
-import Foundation
 import UIKit
 
 class CustomNavigationBar: UIView {
     
+    var onCartButtonTapped: (() -> Void)?
+    var onCloseTapped: (() -> Void)?
+    
+    func updateCartVisibility(shouldShowCartButton: Bool) {
+        cartButton.isHidden = !shouldShowCartButton
+    }
+    
     private lazy var titleLabel : UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         label.textColor = .white
         label.numberOfLines = 0
         label.textAlignment = .center
+        label.sizeToFit()
         return label
     }()
-    var closeButton: UIButton?
+    
+    private lazy var cartButton : CartButton = {
+        let button = CartButton()
+        button.addTarget(self, action: #selector(cartButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var closeButton : UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "xmark", withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .bold))?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+        button.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+        
+        return button
+    }()
     
     init(title: String, showCloseButton: Bool = false) {
         super.init(frame: .zero)
-        backgroundColor = UIColor.primary
-        titleLabel.text = title
+        backgroundColor = .primary
         
+        titleLabel.text = title
+        setupLayout()
         if showCloseButton {
-            let closeButton = UIButton(type: .custom)
-            closeButton.setImage(UIImage(named: "close"), for: .normal)
-            self.closeButton = closeButton
+            addSubview(closeButton)
+            print("CLoseButtun displayed")
+            closeButton.setupConstraints(
+                leadingAnchor: self.leadingAnchor,
+                leadingConstant: 8,
+                centerYAnchor: self.centerYAnchor
+            )
         }
-        setupUI()
-       
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupUI() {
-        
+    private func setupLayout() {
         addSubview(titleLabel)
+        addSubview(cartButton)
         
-        if let closeButton = closeButton {
-            addSubview(closeButton)
-        }
         titleLabel.setupConstraints(
             centerYAnchor: self.centerYAnchor,
             centerXAnchor:self.centerXAnchor
         )
-
-        if let closeButton = closeButton {
-            closeButton.setupConstraints(
-                leadingAnchor: self.leadingAnchor,
-                leadingConstant: 16,
-                centerYAnchor: self.centerYAnchor
-            )
-        }
+        titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        cartButton.setupConstraints(
+            trailingAnchor: trailingAnchor,trailingConstant: -8,
+            centerYAnchor: centerYAnchor
+        )
+        
+        cartButton.addTarget(self, action: #selector(cartButtonTapped), for: .touchUpInside)
     }
-
-    
+    func updateCartAmount(to amount: Double) {
+        let formattedAmount = String(format: "₺%.2f", amount)
+        cartButton.updatePrice(to: formattedAmount)
+    }
+    @objc private func cartButtonTapped() {
+        onCartButtonTapped?()
+    }
+    @objc private func closeButtonTapped() {
+        print("Are there any ")
+        onCloseTapped?()
+    }
 }

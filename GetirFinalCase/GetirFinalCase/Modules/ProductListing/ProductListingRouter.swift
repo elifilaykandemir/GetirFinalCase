@@ -8,7 +8,7 @@
 import Foundation
 
 enum ProductListRoutes {
-    case detail
+    case detail(product: Product, imageData: ImageData?)
     case basket
     //case detail
 }
@@ -42,11 +42,15 @@ extension ProductListingRouter: ProductListingRouterProtocol {
     
     func navigate(_ route: ProductListRoutes) {
         switch route {
-        case .detail:
-//            let productDetailVC = productDetailRouter.createModule()
-//            viewController?.navigationController?.pushViewController(productDetailVC, animated: true)
-            let vc = ProductDetailViewController()
-            viewController?.navigationController?.pushViewController(vc, animated: true)
+//        case .detail:
+//            let productDetailVC = ProductDetailRouter.createModule()
+//            //viewController?.navigationController?.pushViewController(productDetailVC, animated: true)
+//            productDetailVC.modalPresentationStyle = .fullScreen
+//            viewController?.present(productDetailVC, animated: true)
+        case .detail(let product, let imageData):
+            let productDetailVC = ProductDetailRouter.createModule(with: product, imageData: imageData)
+            productDetailVC.modalPresentationStyle = .fullScreen
+            viewController?.present(productDetailVC, animated: true)
         case .basket:
 //            let basketVC = basketRouter.createModule()
 //            viewController?.navigationController?.pushViewController(basketVC, animated: true)

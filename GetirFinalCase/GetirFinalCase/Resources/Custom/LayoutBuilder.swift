@@ -30,16 +30,16 @@ class LayoutBuilder {
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
         section.contentInsets = NSDirectionalEdgeInsets(
-            top: 16,
+            top: 24,
             leading: 0,
-            bottom: 8,
+            bottom: 16,
             trailing: 0
         )
         let sectionBackground = NSCollectionLayoutDecorationItem.background(elementKind: backgroundElementKind)
         sectionBackground.contentInsets = NSDirectionalEdgeInsets(
-            top: 8,
+            top: 16,
             leading: 0,
-            bottom: 8,
+            bottom: 16,
             trailing: 0
         )
         section.decorationItems = [sectionBackground]

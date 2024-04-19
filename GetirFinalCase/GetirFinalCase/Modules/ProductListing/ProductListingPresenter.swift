@@ -41,7 +41,6 @@ final class ProductListingPresenter {
 extension ProductListingPresenter: ProductListingPresenterProtocol{
     
     func product(_ index: Int) -> Product? {
-        print("\(products[index])")
         return products[index]
     }
     private func product(withID productId: String) -> Product? {
@@ -69,9 +68,9 @@ extension ProductListingPresenter: ProductListingPresenterProtocol{
         } else {
             BasketManager.shared.removeProduct(product)
         }
-        DispatchQueue.main.async {
-            self.view?.refreshCartAmount(BasketManager.shared.total)
-        }
+//        DispatchQueue.main.async {
+//            self.view?.refreshCartAmount(BasketManager.shared.total)
+//        }
         
     }
     @objc private func basketUpdated(notification: Notification) {
@@ -90,19 +89,22 @@ extension ProductListingPresenter: ProductListingPresenterProtocol{
     }
     
     func didSelectProduct(at index: Int) {
-        router?.navigate(.detail)
+        guard index < products.count, index < productImages.count else { return }
+        let product = products[index]
+        let imageData = productImages[index]
+        //router?.navigate(.detail(product))
+        router?.navigate(.detail(product: product, imageData: imageData))
+        
     }
     
     func didTapCartButton() {
         router?.navigate(.basket)
     }
     
-    
     func cartUpdated(_ price:Double) {
         DispatchQueue.main.async { [weak self] in
             self?.view?.refreshCartAmount(price)
         }
-        
     }
     
     func fetchProduct(){

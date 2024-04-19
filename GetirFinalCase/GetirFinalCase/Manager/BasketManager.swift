@@ -23,9 +23,7 @@ final class BasketManager {
     func addProduct(_ product: Product) {
         if let existingProduct = products[product.id] {
             products[product.id]?.quantity = product.quantity
-            
         } else {
-            
             products[product.id] = product
         }
         calculateTotalPrice()
@@ -39,6 +37,15 @@ final class BasketManager {
         }
         calculateTotalPrice()
     }
+    
+    func updateProduct(_ updatedProduct: Product) {
+            if let _ = products[updatedProduct.id] {
+                products[updatedProduct.id] = updatedProduct
+            } else {
+                products[updatedProduct.id] = updatedProduct
+            }
+            calculateTotalPrice()
+        }
     
     private func calculateTotalPrice() {
         NotificationCenter.default.post(name: .basketDidUpdate, object: nil, userInfo: ["newPrice": total])
