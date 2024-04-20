@@ -14,6 +14,7 @@ protocol ProductCellProtocol: AnyObject {
     func setAttributeLabel(_ text: String)
     func setStepperState(isExpanded: Bool, quantity: Int)
     func setProductID(_ id: String)
+    
 }
 
 final class ProductCollectionViewCell: UICollectionViewCell {
@@ -24,8 +25,8 @@ final class ProductCollectionViewCell: UICollectionViewCell {
             presenter.load()
         }
     }
-    lazy var stepperButton : ExpandableButton = {
-        let button = ExpandableButton()
+    lazy var stepperButton : StepperButton = {
+        let button = StepperButton()
         return button
     }()
     
@@ -119,15 +120,14 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        imageView.image = nil
-        priceLabel.text = nil
-        productNameLabel.text = nil
-        attributeLabel.text = nil
-        NotificationCenter.default.removeObserver(self)
-        stepperButton.reset()
-    }
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//        imageView.image = nil
+//        priceLabel.text = nil
+//        productNameLabel.text = nil
+//        attributeLabel.text = nil
+//        stepperButton.reset()
+//    }
 }
 
 extension ProductCollectionViewCell: ProductCellProtocol {
@@ -159,7 +159,7 @@ extension ProductCollectionViewCell: ProductCellProtocol {
     
     
 }
-extension ProductCollectionViewCell: ExpandableButtonDelegate {
+extension ProductCollectionViewCell: StepperButtonDelegate {
     
     func didTapButton(with isExpanded: Bool) {
         updateBorderFor(isExpanded: isExpanded)
@@ -172,6 +172,12 @@ extension ProductCollectionViewCell: ExpandableButtonDelegate {
     func setStepperState(isExpanded: Bool, quantity: Int) {
         stepperButton.isExpanded = isExpanded
         stepperButton.count = quantity
+        print("Quantitiy")
+
         
+    }
+    func setStepperCount(_ count: Int) {
+        stepperButton.count = count
+    
     }
 }

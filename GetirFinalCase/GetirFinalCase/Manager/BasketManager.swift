@@ -16,7 +16,6 @@ final class BasketManager {
     
     var total: Double {
         let totalValue = products.values.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
-        print("Total value recalculated: \(totalValue)")
         return totalValue
     }
     
@@ -37,15 +36,6 @@ final class BasketManager {
         }
         calculateTotalPrice()
     }
-    
-    func updateProduct(_ updatedProduct: Product) {
-            if let _ = products[updatedProduct.id] {
-                products[updatedProduct.id] = updatedProduct
-            } else {
-                products[updatedProduct.id] = updatedProduct
-            }
-            calculateTotalPrice()
-        }
     
     private func calculateTotalPrice() {
         NotificationCenter.default.post(name: .basketDidUpdate, object: nil, userInfo: ["newPrice": total])

@@ -43,17 +43,17 @@ final class ProductDetailPresenter {
 }
 
 extension ProductDetailPresenter:ProductDetailPresenterProtocol {
-    
-    func didTapAddBasket() {
-        //TODO: Basket Management
-    }
+
     
     func load() {
+        passedProductID()
         view?.cartButtonAction()
         view?.addToBasketButtonAction()
         view?.closeButtonAction()
         displayProductDetails()
         displayImage()
+        updateCartButtonVisibility()
+        
     }
     
     func viewDidLoad() {
@@ -61,13 +61,26 @@ extension ProductDetailPresenter:ProductDetailPresenterProtocol {
         NotificationCenter.default.addObserver(self, selector: #selector(handleStepperChange(_:)), name: .stepperCountDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(basketUpdated), name: .basketDidUpdate, object: nil)
         load()
-        
+        setInitialCardAmaunt()
+       
         
     }
+    
+    private func setInitialCardAmaunt(){
+        let initialCardAmount = BasketManager.shared.total
+        cartUpdated(initialCardAmount)
+    }
+    
+    private func passedProductID(){
+        guard let product = self.product else { return }
+        view?.setProductId(product.id)
+    }
+    
     private func displayProductDetails() {
         if let product = product{
             view?.displayProductDetail(priceText: product.priceText,
-                                       productText: product.name, attText: product.attribute ?? "")
+                                       productText: product.name,
+                                       attText: product.attribute ?? "")
         }
     }
     private func displayImage() {
@@ -80,9 +93,14 @@ extension ProductDetailPresenter:ProductDetailPresenterProtocol {
 
   
     func cartUpdated(_ price: Double) {
+        print("initial Caard amoun",price)
         DispatchQueue.main.async { [weak self] in
             self?.view?.refreshCartAmount(price)
         }
+    }
+    
+    func didTapAddBasket() {
+        cartUpdated(BasketManager.shared.total)
     }
     
     func didTapCart() {
@@ -91,6 +109,10 @@ extension ProductDetailPresenter:ProductDetailPresenterProtocol {
     
     func didTapClose(){
         router?.navigate(.list)
+    }
+    func updateCartButtonVisibility() {
+        let displayCartButton = BasketManager.shared.total > 0
+        view?.updateCartVisibility(shouldShowCartButton: displayCartButton)
     }
 
 }
@@ -103,12 +125,13 @@ extension ProductDetailPresenter {
             return
         }
         product?.quantity = newCount
-        BasketManager.shared.updateProduct(product!)
+       
         
     }
     @objc private func basketUpdated(notification: Notification) {
         if let newPrice = notification.userInfo?["newPrice"] as? Double {
             cartUpdated(newPrice)
+            updateCartButtonVisibility()
         }
     }
 }

@@ -15,6 +15,8 @@ protocol ProductDetailViewProtocol: AnyObject {
     func cartButtonAction()
     func addToBasketButtonAction()
     func closeButtonAction()
+    func updateCartVisibility(shouldShowCartButton: Bool)
+    func setProductId(_ productId: String)
 }
 
 final class ProductDetailViewController: UIViewController {
@@ -32,24 +34,20 @@ final class ProductDetailViewController: UIViewController {
     private lazy var contentView = DetailView()
     private lazy var addBasketView = AddBasketView()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         presenter.viewDidLoad()
-        
     }
 
-  
-    private func setupViews() {
+  private func setupViews() {
         view.backgroundColor = .primary
         view.addSubview(customNavBar)
         view.addSubview(customView)
         customView.addSubview(contentView)
         customView.addSubview(addBasketView)
         
-       
-        customNavBar.setupConstraints(
+       customNavBar.setupConstraints(
             leadingAnchor: view.leadingAnchor,
             topAnchor: view.safeAreaLayoutGuide.topAnchor,
             trailingAnchor: view.trailingAnchor,
@@ -78,6 +76,7 @@ final class ProductDetailViewController: UIViewController {
     }
 }
 extension ProductDetailViewController : ProductDetailViewProtocol {
+    
     func imageNotFound() {
         contentView.setImage(UIImage(named: "defaultImage")?.pngData())
     }
@@ -115,4 +114,13 @@ extension ProductDetailViewController : ProductDetailViewProtocol {
             self?.presenter.didTapClose()
         }
     }
+    func updateCartVisibility(shouldShowCartButton: Bool) {
+            DispatchQueue.main.async { [weak self] in
+                self?.customNavBar.updateCartVisibility(shouldShowCartButton: shouldShowCartButton)
+            }
+        }
+    func setProductId(_ productId: String) {
+        addBasketView.configureWithProductId(productId)
+    }
+   
 }

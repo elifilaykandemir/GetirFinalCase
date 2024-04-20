@@ -24,15 +24,10 @@ final class ProductCellPresenter {
         
     }
     
-    func getProduct() -> Product {
-           return product
-       }
-    
 }
 extension ProductCellPresenter: ProductCellPresenterProtocol {
  
     func load() {
-        
         self.view?.setImage(images.data)
         self.view?.setPriceLabel(product.price)
         self.view?.setProductNameLabel(product.name)
@@ -42,5 +37,4 @@ extension ProductCellPresenter: ProductCellPresenterProtocol {
         self.view?.setStepperState(isExpanded: currentCount > 0, quantity: currentCount)
     }
 
-    
 }

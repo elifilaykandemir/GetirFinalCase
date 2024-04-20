@@ -60,7 +60,7 @@ extension ProductListingPresenter: ProductListingPresenterProtocol{
               let product = product(withID: productId) else {
             return
         }
-        
+
         if newCount > 0 {
             var updatedProduct = product
             updatedProduct.quantity = newCount

@@ -10,15 +10,16 @@ class HorizantalStepperButton: UIView {
 
     var productId: String = ""
     
-    typealias VisibilityChangedHandler = (Bool) -> Void
+    typealias ChangeHandler = (Bool) -> Void
 
-    var onVisibilityChanged: VisibilityChangedHandler?
+    var onDisplayedChanged: ChangeHandler?
    
     var count: Int {
         get { StepperCountManager.shared.getCount(for: productId) }
         set {
             StepperCountManager.shared.setCount(for: productId, to: newValue)
             updateButtonAppearance()
+            onDisplayedChanged?(newValue == 0)
         }
     }
     
@@ -67,11 +68,8 @@ class HorizantalStepperButton: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    
     @objc private func tappedPlusButton() {
         increaseCount()
-        
         
     }
     
@@ -82,7 +80,6 @@ class HorizantalStepperButton: UIView {
     
     @objc private func decreaseCount() {
         StepperCountManager.shared.decrementCount(for: productId)
-        print(productId)
         let updatedCount = StepperCountManager.shared.getCount(for: productId)
         count = updatedCount
         
@@ -94,19 +91,8 @@ class HorizantalStepperButton: UIView {
     }
     
     @objc private func trashButtonTapped() {
-        StepperCountManager.shared.decrementCount(for: productId)
-        
-        let updatedCount = StepperCountManager.shared.getCount(for: productId)
-        count = updatedCount
-        if count <= 1 {
-            count = 0
-            isHidden = true
-            onVisibilityChanged?(true)
-            count = 1
-        } else {
-            decreaseCount()
-        }
-        
+        StepperCountManager.shared.setCount(for: productId, to: 0)
+        count = 0
     }
  
     private func updateButtonAppearance() {
@@ -116,12 +102,10 @@ class HorizantalStepperButton: UIView {
         trashButton.setImage(icon, for: .normal)
         trashButton.tintColor = .primary
         countLabel.text = "\(count)"
-        
     }
     
     private func setupStackView() {
         addSubview(containerStackView)
-        
     }
     
     private func setupConstraints() {

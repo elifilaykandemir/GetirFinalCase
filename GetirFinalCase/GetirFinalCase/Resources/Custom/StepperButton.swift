@@ -1,9 +1,9 @@
 import UIKit
 
-protocol ExpandableButtonDelegate: AnyObject {
+protocol StepperButtonDelegate: AnyObject {
     func didTapButton(with: Bool)
 }
-class ExpandableButton: UIView {
+class StepperButton: UIView {
     
     var productId: String = ""
     
@@ -13,15 +13,20 @@ class ExpandableButton: UIView {
             adjustButtonTargets()
         }
     }
+    typealias ChangeHandler = (Bool) -> Void
+    
+    var onDisplayedChanged: ChangeHandler?
+    
     var count: Int {
         get { StepperCountManager.shared.getCount(for: productId) }
         set {
             StepperCountManager.shared.setCount(for: productId, to: newValue)
             updateButtonAppearance()
+            onDisplayedChanged?(newValue == 0)
         }
     }
     
-    weak var delegate: ExpandableButtonDelegate?
+    weak var delegate: StepperButtonDelegate?
     
     private lazy var plusButton: CustomButton = {
         let button = CustomButton(frame: .zero, icon: "plus")
@@ -93,10 +98,8 @@ class ExpandableButton: UIView {
     
     @objc private func decreaseCount() {
         StepperCountManager.shared.decrementCount(for: productId)
-        print(productId)
         let updatedCount = StepperCountManager.shared.getCount(for: productId)
         count = updatedCount
-        
         if count <= 0 {
             trashButtonTapped()
         } else {
@@ -105,19 +108,13 @@ class ExpandableButton: UIView {
     }
     
     @objc private func trashButtonTapped() {
-        StepperCountManager.shared.decrementCount(for: productId)
-        
-        let updatedCount = StepperCountManager.shared.getCount(for: productId)
-        count = updatedCount
+        StepperCountManager.shared.setCount(for: productId, to: 0)
+        count = 0
         if count <= 1 {
             isExpanded = false
-            count = 0
             updateExpandAnimation()
             delegate?.didTapButton(with: isExpanded)
-        } else {
-            decreaseCount()
         }
-        
     }
     
     private func adjustButtonTargets() {
@@ -184,23 +181,12 @@ class ExpandableButton: UIView {
             bottomAnchor: bottomAnchor
         )
     }
-    
 }
-extension ExpandableButton {
+extension StepperButton {
     func reset() {
         count = 0
         isExpanded = false
         updateButtonAppearance()
         updateExpandAnimation()
     }
-    func showCountLabel() {
-        countLabel.isHidden = false
-    }
-    
-    func hideCountLabel() {
-        countLabel.isHidden = true
-    }
 }
-
-
-

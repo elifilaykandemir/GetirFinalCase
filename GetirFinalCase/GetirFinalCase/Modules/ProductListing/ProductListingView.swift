@@ -50,7 +50,7 @@ extension ProductListingViewController: UICollectionViewDataSource, UICollection
         }
         if let product = presenter.product(indexPath.item), let image = presenter.productImage(indexPath.item){
             cell.presenter = ProductCellPresenter(view: cell, product: product, images: image)
-            
+           
         }
         return cell
     }
