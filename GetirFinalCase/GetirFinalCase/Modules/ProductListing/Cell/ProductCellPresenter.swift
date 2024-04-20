@@ -17,6 +17,7 @@ final class ProductCellPresenter {
     private var images: ImageData
     
     
+    
     init(view: ProductCellProtocol? = nil, product: Product, images:ImageData) {
         self.view = view
         self.product = product

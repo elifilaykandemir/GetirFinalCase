@@ -9,17 +9,17 @@ import Foundation
 
 protocol ProductListingInteractorProtocol: AnyObject {
     func fetchProducts() async
+    func fetchSuggestedProduct() async
 }
 
 protocol ProductListingInteractorOutput: AnyObject {
     func productsFetchedSuccessfully(_ products: [Product],imageData: [ImageData])
+    func suggestedProductsFetchedSuccessfully(_ products: [Product],imageData: [ImageData])
     func productsFetchFailed(withError: Error)
-    
 }
 
 final class ProductListingInteractor {
     weak var presenter: ProductListingInteractorOutput!
-   
 }
 
 extension ProductListingInteractor: ProductListingInteractorProtocol {
@@ -31,7 +31,7 @@ extension ProductListingInteractor: ProductListingInteractorProtocol {
             if let products = result[0].products {
                 var imageDataArray = [ImageData]()
                 for product in products {
-                    if let url = URL(string: product.imageURL) {
+                    if let url = product.imageURLAsURL {
                         var imageData = ImageData(url: url, data: nil)
                         imageData.data = try? await NetworkManager.shared.fetchImage(url: url)
                         imageDataArray.append(imageData)
@@ -46,5 +46,26 @@ extension ProductListingInteractor: ProductListingInteractorProtocol {
             self.presenter?.productsFetchFailed(withError: error)
         }
     }
-    
+    func fetchSuggestedProduct() async {
+        let request = SuggestedProductRequest()
+        do {
+            let result = try await NetworkManager.shared.fetch(request)
+            if let firstSuggestedCategory = result.first, let products = firstSuggestedCategory.products {
+                var imageDataArray = [ImageData]()
+                for product in products {
+                    if let url = product.imageURLAsURL {
+                        var imageData = ImageData(url: url, data: nil)
+                        imageData.data = try? await NetworkManager.shared.fetchImage(url: url)
+                        imageDataArray.append(imageData)
+                        
+                    }
+                }
+                self.presenter?.suggestedProductsFetchedSuccessfully(products, imageData: imageDataArray)
+            }
+            
+        } catch {
+            print("Failed to fetch product: \(error)")
+            self.presenter?.productsFetchFailed(withError: error)
+        }
+    }
 }

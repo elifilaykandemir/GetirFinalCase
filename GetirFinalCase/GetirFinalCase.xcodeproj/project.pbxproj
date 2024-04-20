@@ -47,6 +47,7 @@
 		FC8980172BC73221004250DB /* ProductCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8980162BC73221004250DB /* ProductCollectionViewCell.swift */; };
 		FC89801B2BC73889004250DB /* ProductCellPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC89801A2BC73889004250DB /* ProductCellPresenter.swift */; };
 		FC89801F2BC757B1004250DB /* PlusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC89801E2BC757B1004250DB /* PlusButton.swift */; };
+		FC8D03282BD3E02400A0A944 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8D03272BD3E02400A0A944 /* Array+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +112,7 @@
 		FC8980162BC73221004250DB /* ProductCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCollectionViewCell.swift; sourceTree = "<group>"; };
 		FC89801A2BC73889004250DB /* ProductCellPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCellPresenter.swift; sourceTree = "<group>"; };
 		FC89801E2BC757B1004250DB /* PlusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusButton.swift; sourceTree = "<group>"; };
+		FC8D03272BD3E02400A0A944 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,6 +237,7 @@
 				FC7F5CFF2BCC7BA100EFE42B /* UIButton+Extension.swift */,
 				FC7F5D072BCDD6B500EFE42B /* String+Extension.swift */,
 				FC7F5D0B2BCEA08B00EFE42B /* Notification.Name.swift */,
+				FC8D03272BD3E02400A0A944 /* Array+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -457,6 +460,7 @@
 				FC7F5D042BCD233600EFE42B /* BasketViewController.swift in Sources */,
 				FC840E932BC5F5C70016A555 /* CartButton.swift in Sources */,
 				FC7F5CF62BCB12E400EFE42B /* ProductRequest.swift in Sources */,
+				FC8D03282BD3E02400A0A944 /* Array+Extension.swift in Sources */,
 				FC7F5D122BD1001B00EFE42B /* ProductDetailPresenter.swift in Sources */,
 				FC7F5D142BD1004100EFE42B /* ProductDetailRouter.swift in Sources */,
 				FC7F5CEF2BCAE64500EFE42B /* NetworkManager.swift in Sources */,

@@ -20,12 +20,13 @@ final class BasketManager {
     }
     
     func addProduct(_ product: Product) {
-        if let existingProduct = products[product.id] {
+        if products[product.id] != nil {
             products[product.id]?.quantity = product.quantity
         } else {
             products[product.id] = product
         }
         calculateTotalPrice()
+        
     }
     
     func removeProduct(_ product: Product) {
@@ -42,8 +43,3 @@ final class BasketManager {
     }
     
 }
-
-
-
-
-

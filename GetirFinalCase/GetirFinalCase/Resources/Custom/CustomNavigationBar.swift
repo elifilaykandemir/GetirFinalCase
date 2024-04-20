@@ -47,7 +47,6 @@ class CustomNavigationBar: UIView {
         setupLayout()
         if showCloseButton {
             addSubview(closeButton)
-            print("CLoseButtun displayed")
             closeButton.setupConstraints(
                 leadingAnchor: self.leadingAnchor,
                 leadingConstant: 8,
@@ -85,7 +84,6 @@ class CustomNavigationBar: UIView {
         onCartButtonTapped?()
     }
     @objc private func closeButtonTapped() {
-        print("Are there any ")
         onCloseTapped?()
     }
 }
