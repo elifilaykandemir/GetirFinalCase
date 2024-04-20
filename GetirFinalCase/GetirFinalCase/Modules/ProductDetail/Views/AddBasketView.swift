@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddBasketView: UIView {
+final class AddBasketView: UIView {
     
     var onAddBasketButtonTapped: (() -> Void)?
     

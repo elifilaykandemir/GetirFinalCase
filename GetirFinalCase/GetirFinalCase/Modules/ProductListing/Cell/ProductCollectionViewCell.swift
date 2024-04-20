@@ -27,8 +27,10 @@ final class ProductCollectionViewCell: UICollectionViewCell {
     }
     lazy var stepperButton : StepperButton = {
         let button = StepperButton()
+        button.delegate = self
         return button
     }()
+    
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -133,28 +135,37 @@ final class ProductCollectionViewCell: UICollectionViewCell {
 extension ProductCollectionViewCell: ProductCellProtocol {
     
     func setImage(_ imageData: Data?) {
-        DispatchQueue.main.async {
-            
+        DispatchQueue.main.async { [weak self] in
             if let data = imageData, let image = UIImage(data: data) {
-                self.imageView.image = image
+                self?.imageView.image = image
             } else {
-                self.imageView.image = UIImage(named: "defaultImage")
+                self?.imageView.image = UIImage(named: "defaultImage")
             }
         }
     }
     func setPriceLabel(_ text: Double) {
-        priceLabel.text = String(format: "₺%.2f", text)
+        DispatchQueue.main.async { [weak self] in
+            self?.priceLabel.text = String(format: "₺%.2f", text)
+        }
+       
     }
     
     func setProductNameLabel(_ text: String) {
-        productNameLabel.text = text.shortenedWord()
+        DispatchQueue.main.async { [weak self] in
+            self?.productNameLabel.text = text.shortenedWord()
+        }
     }
     
     func setAttributeLabel(_ text: String) {
-        attributeLabel.text = text
+        DispatchQueue.main.async { [weak self] in
+            self?.attributeLabel.text = text
+        }
     }
     func setProductID(_ id: String) {
         stepperButton.productId = id
+        let count = StepperCountManager.shared.getCount(for: id)
+        let isExpanded = count > 0
+        setStepperState(isExpanded: isExpanded, quantity: count)
     }
     
     
@@ -172,7 +183,6 @@ extension ProductCollectionViewCell: StepperButtonDelegate {
     func setStepperState(isExpanded: Bool, quantity: Int) {
         stepperButton.isExpanded = isExpanded
         stepperButton.count = quantity
-        print("Quantitiy")
 
         
     }

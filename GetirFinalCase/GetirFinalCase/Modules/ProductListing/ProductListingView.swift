@@ -33,6 +33,12 @@ final class ProductListingViewController: UIViewController {
         setupConstraint()
         presenter.viewDidLoad()
         
+        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter.viewDidLoad()
+        
     }
 }
 extension ProductListingViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -50,8 +56,8 @@ extension ProductListingViewController: UICollectionViewDataSource, UICollection
         }
         if let product = presenter.product(for: indexPath),let image = presenter.productImage(for: indexPath){
             cell.presenter = ProductCellPresenter(view: cell, product: product, images: image)
-            
         }
+        cell.layoutIfNeeded()
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

@@ -32,8 +32,8 @@ struct Product: Codable {
     var isExpanded: Bool
     var quantity: Int
     
-    var thumbnailURLAsURL: URL? {
-        if let urlString = thumbnailURL {
+    var squareThumbnailASURL: URL? {
+        if let urlString = squareThumbnailURL {
             return URL(string: urlString)
         }
         return nil

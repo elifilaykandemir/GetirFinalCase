@@ -24,13 +24,10 @@ final class ProductDetailRouter {
     static func createModule(with product: Product, imageData: ImageData?) -> ProductDetailViewController {
         
         let view = ProductDetailViewController()
-        let interactor = ProductDetailInteractor()
         let router = ProductDetailRouter()
         
-        let presenter = ProductDetailPresenter(view: view, router: router, interactor: interactor,product: product, productImage:imageData)
-    
+        let presenter = ProductDetailPresenter(view: view, router: router,product: product, productImage:imageData)
         view.presenter = presenter
-        interactor.presenter = presenter
         router.viewController = view
    
         return view
@@ -43,9 +40,8 @@ extension ProductDetailRouter: ProductDetailRouterProtocol {
     func navigate(_ route: ProductDetailRoutes) {
         switch route {
         case .list:
-            let vc =  ProductListingRouter.createModule()
-            vc.modalPresentationStyle = .fullScreen
-            viewController?.present(vc, animated: true)
+            let vc = ProductDetailViewController()
+            viewController?.dismiss(animated: true)
         case .basket:
             //TODO: Open basket page
 //            let basketVC = basketRouter.createModule()

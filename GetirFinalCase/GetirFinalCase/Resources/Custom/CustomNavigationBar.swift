@@ -6,7 +6,7 @@
 //
 import UIKit
 
-class CustomNavigationBar: UIView {
+final class CustomNavigationBar: UIView {
     
     var onCartButtonTapped: (() -> Void)?
     var onCloseTapped: (() -> Void)?

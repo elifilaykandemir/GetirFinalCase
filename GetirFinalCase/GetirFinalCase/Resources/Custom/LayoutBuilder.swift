@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LayoutBuilder {
+final class LayoutBuilder {
 
     static func createHorizontalScrollingSection(backgroundElementKind: String) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(

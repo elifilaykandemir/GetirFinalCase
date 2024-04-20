@@ -1,6 +1,6 @@
 import UIKit
 
-class CartButton: UIButton {
+final class CartButton: UIButton {
     
     private lazy var iconImageView : UIImageView = {
         let imageView = UIImageView()

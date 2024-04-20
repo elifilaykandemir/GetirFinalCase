@@ -22,7 +22,6 @@ final class ProductCellPresenter {
         self.view = view
         self.product = product
         self.images = images
-        
     }
     
 }

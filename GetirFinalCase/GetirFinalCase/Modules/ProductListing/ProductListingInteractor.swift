@@ -8,8 +8,8 @@
 import Foundation
 
 protocol ProductListingInteractorProtocol: AnyObject {
-    func fetchProducts() async
-    func fetchSuggestedProduct() async
+    func fetchProducts()
+    func fetchSuggestedProduct()
 }
 
 protocol ProductListingInteractorOutput: AnyObject {
@@ -23,49 +23,87 @@ final class ProductListingInteractor {
 }
 
 extension ProductListingInteractor: ProductListingInteractorProtocol {
-    
-    func fetchProducts() async {
+    func fetchProducts() {
         let request = ProductRequest()
-        do {
-            let result = try await NetworkManager.shared.fetch(request)
-            if let products = result[0].products {
-                var imageDataArray = [ImageData]()
-                for product in products {
-                    if let url = product.imageURLAsURL {
-                        var imageData = ImageData(url: url, data: nil)
-                        imageData.data = try? await NetworkManager.shared.fetchImage(url: url)
-                        imageDataArray.append(imageData)
-                        
+        NetworkManager.shared.fetch(request) { [weak self] result in
+            switch result {
+            case .success(let result):
+                if let products = result[0].products {
+                    var imageDataArray = [ImageData]()
+                    let group = DispatchGroup()
+                    
+                    for product in products {
+                        if let url = product.imageURLAsURL {
+                            var imageData = ImageData(url: url, data: nil)
+                            group.enter()
+                            
+                            NetworkManager.shared.fetchImage(url: url) { result in
+                                DispatchQueue.main.async {
+                                    switch result {
+                                    case .success(let data):
+                                        imageData.data = data
+                                        print("Fetched image for URL:", url)
+                                    case .failure(let error):
+                                        print("Error fetching image for URL: \(url) with error: \(error)")
+                                    }
+                                    imageDataArray.append(imageData)
+                                    group.leave()
+                                }
+                            }
+                        }
+                    }
+                    
+                    group.notify(queue: .main) {
+                        self?.presenter?.productsFetchedSuccessfully(products, imageData: imageDataArray)
                     }
                 }
-                self.presenter?.productsFetchedSuccessfully(products, imageData: imageDataArray)
+                
+            case .failure(let error):
+                print("Failed to fetch product: \(error)")
+                self?.presenter?.productsFetchFailed(withError: error)
             }
-            
-        } catch {
-            print("Failed to fetch product: \(error)")
-            self.presenter?.productsFetchFailed(withError: error)
         }
     }
-    func fetchSuggestedProduct() async {
+    func fetchSuggestedProduct() {
         let request = SuggestedProductRequest()
-        do {
-            let result = try await NetworkManager.shared.fetch(request)
-            if let firstSuggestedCategory = result.first, let products = firstSuggestedCategory.products {
-                var imageDataArray = [ImageData]()
-                for product in products {
-                    if let url = product.imageURLAsURL {
-                        var imageData = ImageData(url: url, data: nil)
-                        imageData.data = try? await NetworkManager.shared.fetchImage(url: url)
-                        imageDataArray.append(imageData)
-                        
+        NetworkManager.shared.fetch(request) { [weak self] result in
+            switch result {
+            case .success(let result):
+                if let firstSuggestedCategory = result.first, let products = firstSuggestedCategory.products {
+                    var imageDataArray = [ImageData]()
+                    let group = DispatchGroup()
+                    
+                    for product in products {
+                        if let url = product.imageURLAsURL {
+                            var imageData = ImageData(url: url, data: nil)
+                            group.enter()
+                            NetworkManager.shared.fetchImage(url: url) { result in
+                                DispatchQueue.main.async {
+                                    switch result {
+                                    case .success(let data):
+                                        imageData.data = data
+                                        print("Fetched image for URL:", url)
+                                    case .failure(let error):
+                                        print("Error fetching image for URL: \(url) with error: \(error)")
+                                    }
+                                    imageDataArray.append(imageData)
+                                    group.leave()
+                                }
+                            }
+                        }
+                    }
+                    
+                    group.notify(queue: .main) {
+                        self?.presenter?.suggestedProductsFetchedSuccessfully(products, imageData: imageDataArray)
                     }
                 }
-                self.presenter?.suggestedProductsFetchedSuccessfully(products, imageData: imageDataArray)
+                
+            case .failure(let error):
+                print("Failed to fetch suggested product: \(error)")
+                self?.presenter?.productsFetchFailed(withError: error)
             }
-            
-        } catch {
-            print("Failed to fetch product: \(error)")
-            self.presenter?.productsFetchFailed(withError: error)
         }
     }
+    
+    
 }

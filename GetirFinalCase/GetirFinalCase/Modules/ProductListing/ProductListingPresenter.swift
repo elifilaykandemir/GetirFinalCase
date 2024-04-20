@@ -39,6 +39,7 @@ final class ProductListingPresenter {
 
 // MARK: - ProductListingPresenterProtocol Implementation
 extension ProductListingPresenter: ProductListingPresenterProtocol {
+    
     func numberOfItems(in section: Int) -> Int {
         guard let sectionType = Section(rawValue: section) else { return 0 }
         return products[sectionType]?.count ?? 0
@@ -47,14 +48,25 @@ extension ProductListingPresenter: ProductListingPresenterProtocol {
     func product(for indexPath: IndexPath) -> Product? {
         guard let section = Section(rawValue: indexPath.section),
               let productsList = products[section] else { return nil }
-        return productsList[safe: indexPath.row]
+        return productsList[safe: indexPath.item]
     }
-    
+
     func productImage(for indexPath: IndexPath) -> ImageData? {
         guard let section = Section(rawValue: indexPath.section),
-              let imagesList = productImages[section] else { return nil }
-        return imagesList[safe: indexPath.row]
+              let imagesList = productImages[section] else {
+            print("Failed to load images for section: \(indexPath.section)")
+            return nil
+        }
+
+        if indexPath.item >= imagesList.count {
+            print("Index \(indexPath.item) out of range \(indexPath.section)")
+            return nil
+        }
+
+        print("Loaded image for item at \(indexPath.item) with URL: \(imagesList[indexPath.item].url)")
+        return imagesList[indexPath.item]
     }
+
     private func product(withID productId: String) -> Product? {
         for productsList in products.values {
             if let product = productsList.first(where: { $0.id == productId }) {
@@ -77,7 +89,6 @@ extension ProductListingPresenter: ProductListingPresenterProtocol {
     }
     
     @objc private func handleStepperChange(_ notification: Notification) {
-        print("Notification userInfo: \(notification.userInfo ?? [:])")
         guard let productId = notification.userInfo?["productId"] as? String,
               let newCount = notification.userInfo?["newCount"] as? Int,
               let product = product(withID: productId) else {
@@ -123,10 +134,9 @@ extension ProductListingPresenter: ProductListingPresenterProtocol {
     }
     
     func fetchProduct() {
-        Task {
-            await interactor?.fetchProducts()
-            await interactor?.fetchSuggestedProduct()
-        }
+        interactor?.fetchProducts()
+        interactor?.fetchSuggestedProduct()
+        
     }
 }
 
@@ -151,3 +161,4 @@ extension ProductListingPresenter: ProductListingInteractorOutput {
         print("Product fetch failed with error: \(withError)")
     }
 }
+

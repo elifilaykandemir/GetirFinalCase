@@ -6,7 +6,7 @@
 
 import UIKit
 
-class HorizantalStepperButton: UIView {
+final class HorizantalStepperButton: UIView {
 
     var productId: String = ""
     

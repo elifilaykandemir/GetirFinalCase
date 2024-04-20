@@ -3,7 +3,7 @@ import UIKit
 protocol StepperButtonDelegate: AnyObject {
     func didTapButton(with: Bool)
 }
-class StepperButton: UIView {
+final class StepperButton: UIView {
     
     var productId: String = ""
     
@@ -21,6 +21,7 @@ class StepperButton: UIView {
         get { StepperCountManager.shared.getCount(for: productId) }
         set {
             StepperCountManager.shared.setCount(for: productId, to: newValue)
+            
             updateButtonAppearance()
             onDisplayedChanged?(newValue == 0)
         }
@@ -73,6 +74,7 @@ class StepperButton: UIView {
         super.init(frame: frame)
         setupStackView()
         setupConstraints()
+       
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -83,12 +85,6 @@ class StepperButton: UIView {
         count = 1
         delegate?.didTapButton(with: isExpanded)
         updateExpandAnimation()
-    }
-    
-    
-    @objc private func toggleExpandCollapse() {
-        increaseCount()
-        
     }
     
     @objc private func increaseCount() {
@@ -120,7 +116,7 @@ class StepperButton: UIView {
     private func adjustButtonTargets() {
         plusButton.removeTarget(nil, action: nil, for: .allEvents)
         if isExpanded {
-            plusButton.addTarget(self, action: #selector(toggleExpandCollapse), for: .touchUpInside)
+            plusButton.addTarget(self, action: #selector(increaseCount), for: .touchUpInside)
         } else {
             plusButton.addTarget(self, action: #selector(initialExpand), for: .touchUpInside)
         }
@@ -184,8 +180,6 @@ class StepperButton: UIView {
 }
 extension StepperButton {
     func reset() {
-        count = 0
-        isExpanded = false
         updateButtonAppearance()
         updateExpandAnimation()
     }

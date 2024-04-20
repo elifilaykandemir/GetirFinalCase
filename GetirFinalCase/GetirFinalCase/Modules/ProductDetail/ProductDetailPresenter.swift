@@ -18,7 +18,6 @@ protocol ProductDetailPresenterProtocol: AnyObject {
 
 final class ProductDetailPresenter {
     weak var view: ProductDetailViewProtocol?
-    var interactor: ProductDetailInteractorProtocol?
     var router: ProductDetailRouterProtocol?
     
     private var product: Product?
@@ -26,14 +25,12 @@ final class ProductDetailPresenter {
     
     init(view: ProductDetailViewProtocol,
          router: ProductDetailRouterProtocol,
-         interactor: ProductDetailInteractorProtocol,
          product: Product,
          productImage: ImageData?
     )
     {
         self.view = view
         self.router = router
-        self.interactor = interactor
         self.product = product
         self.productImages = productImage
     }
@@ -62,8 +59,6 @@ extension ProductDetailPresenter:ProductDetailPresenterProtocol {
         NotificationCenter.default.addObserver(self, selector: #selector(basketUpdated), name: .basketDidUpdate, object: nil)
         load()
         setInitialCardAmaunt()
-       
-        
     }
     
     private func setInitialCardAmaunt(){
@@ -93,7 +88,6 @@ extension ProductDetailPresenter:ProductDetailPresenterProtocol {
 
   
     func cartUpdated(_ price: Double) {
-        print("initial Caard amoun",price)
         DispatchQueue.main.async { [weak self] in
             self?.view?.refreshCartAmount(price)
         }
@@ -136,9 +130,3 @@ extension ProductDetailPresenter {
     }
 }
 
-extension ProductDetailPresenter: ProductDetailInteractorOutput {
-    func productsPassed() {
-        //TODO: Data Passed
-    }
-    
-}
