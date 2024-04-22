@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import Kingfisher
 
 protocol ProductCellProtocol: AnyObject {
-    func setImage(_ imageData: Data?)
+    func setImage(from url: URL?)
     func setPriceLabel(_ text: Double)
     func setProductNameLabel(_ text: String)
     func setAttributeLabel(_ text: String)
@@ -122,26 +123,30 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         
     }
     
-//    override func prepareForReuse() {
-//        super.prepareForReuse()
-//        imageView.image = nil
-//        priceLabel.text = nil
-//        productNameLabel.text = nil
-//        attributeLabel.text = nil
-//        stepperButton.reset()
-//    }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+        stepperButton.reset()
+        updateBorderFor(isExpanded: false)
+        
+    }
 }
 
 extension ProductCollectionViewCell: ProductCellProtocol {
-    
-    func setImage(_ imageData: Data?) {
-        DispatchQueue.main.async { [weak self] in
-            if let data = imageData, let image = UIImage(data: data) {
-                self?.imageView.image = image
-            } else {
-                self?.imageView.image = UIImage(named: "defaultImage")
+
+    func setImage(from url: URL?) {
+        guard let url = url?.secureURL() else {
+                print("Invalid or non-secure URL.")
+                return 
             }
-        }
+        imageView.kf.indicatorType = .activity
+           imageView.kf.setImage(
+               with: url,
+               placeholder: UIImage(named: "default"),
+               options: [
+                   .transition(.fade(0.2)),
+                   .cacheOriginalImage
+               ])
     }
     func setPriceLabel(_ text: Double) {
         DispatchQueue.main.async { [weak self] in
@@ -186,8 +191,5 @@ extension ProductCollectionViewCell: StepperButtonDelegate {
 
         
     }
-    func setStepperCount(_ count: Int) {
-        stepperButton.count = count
-    
-    }
+
 }

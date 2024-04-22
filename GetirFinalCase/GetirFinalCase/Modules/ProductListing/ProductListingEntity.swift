@@ -38,10 +38,14 @@ struct Product: Codable {
         }
         return nil
     }
-    
+
     var imageURLAsURL: URL? {
-        guard let urlString = imageURL else { return nil }
-        return URL(string: urlString)
+        if let urlString = imageURL, let url = URL(string: urlString) {
+            return url
+        } else if let thumbnailString = squareThumbnailURL, let url = URL(string: thumbnailString) {
+            return url
+        }
+        return nil
     }
     
     init(from decoder: Decoder) throws {
@@ -61,10 +65,4 @@ struct Product: Codable {
         isExpanded = false
         quantity = 0
     }
-}
-
-
-struct ImageData {
-    let url: URL
-    var data: Data?
 }

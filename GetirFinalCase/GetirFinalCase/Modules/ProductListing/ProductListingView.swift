@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 enum Section: Int, CaseIterable {
     case horizontal
@@ -37,11 +38,12 @@ final class ProductListingViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        presenter.viewDidLoad()
+        presenter.viewWillAppear()
         
     }
 }
 extension ProductListingViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return Section.allCases.count
     }
@@ -54,12 +56,12 @@ extension ProductListingViewController: UICollectionViewDataSource, UICollection
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCollectionViewCell.identifier, for: indexPath) as? ProductCollectionViewCell else {
             fatalError("Could not dequeue a ProductCollectionViewCell")
         }
-        if let product = presenter.product(for: indexPath),let image = presenter.productImage(for: indexPath){
-            cell.presenter = ProductCellPresenter(view: cell, product: product, images: image)
+        if let product = presenter.product(for: indexPath),let imageURL = presenter.productImageURL(for: indexPath){
+            cell.presenter = ProductCellPresenter(view: cell, product: product, imageURL: imageURL)
         }
-        cell.layoutIfNeeded()
         return cell
     }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let section = Section(rawValue: indexPath.section) else { return }
         switch section {
@@ -149,7 +151,6 @@ extension ProductListingViewController: ProductListingViewProtocol {
     }
     
     func setupConstraint(){
-        
         view.addSubview(customNavBar)
         customNavBar.setupConstraints(
             leadingAnchor: view.leadingAnchor,
@@ -157,13 +158,14 @@ extension ProductListingViewController: ProductListingViewProtocol {
             trailingAnchor: view.trailingAnchor,
             height: 24
         )
-        
     }
+    
     func setupNavBar() {
         customNavBar.onCartButtonTapped = { [weak self] in
             self?.cartButtonTapped()
         }
     }
+    
     func reloadProductList() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()

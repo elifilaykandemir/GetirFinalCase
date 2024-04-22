@@ -8,7 +8,7 @@
 import Foundation
 
 enum ProductListRoutes {
-    case detail(product: Product, imageData: ImageData?)
+    case detail(product: Product, imageData: URL)
     case basket
 }
 

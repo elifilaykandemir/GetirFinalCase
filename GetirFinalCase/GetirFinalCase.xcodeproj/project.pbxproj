@@ -19,7 +19,7 @@
 		FC7F5D002BCC7BA100EFE42B /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7F5CFF2BCC7BA100EFE42B /* UIButton+Extension.swift */; };
 		FC7F5D022BCD232900EFE42B /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7F5D012BCD232900EFE42B /* ProductDetailViewController.swift */; };
 		FC7F5D042BCD233600EFE42B /* BasketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7F5D032BCD233600EFE42B /* BasketViewController.swift */; };
-		FC7F5D082BCDD6B500EFE42B /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7F5D072BCDD6B500EFE42B /* String+Extension.swift */; };
+		FC7F5D082BCDD6B500EFE42B /* Type+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7F5D072BCDD6B500EFE42B /* Type+Extension.swift */; };
 		FC7F5D0A2BCEA03700EFE42B /* BasketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7F5D092BCEA03700EFE42B /* BasketManager.swift */; };
 		FC7F5D0C2BCEA08B00EFE42B /* Notification.Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7F5D0B2BCEA08B00EFE42B /* Notification.Name.swift */; };
 		FC7F5D0E2BCEB45200EFE42B /* StepperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7F5D0D2BCEB45200EFE42B /* StepperManager.swift */; };
@@ -47,7 +47,7 @@
 		FC8980172BC73221004250DB /* ProductCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8980162BC73221004250DB /* ProductCollectionViewCell.swift */; };
 		FC89801B2BC73889004250DB /* ProductCellPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC89801A2BC73889004250DB /* ProductCellPresenter.swift */; };
 		FC89801F2BC757B1004250DB /* PlusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC89801E2BC757B1004250DB /* PlusButton.swift */; };
-		FC8D03282BD3E02400A0A944 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8D03272BD3E02400A0A944 /* Array+Extension.swift */; };
+		FC8BE8472BD58B4600504102 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = FC8BE8462BD58B4600504102 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,7 +80,7 @@
 		FC7F5CFF2BCC7BA100EFE42B /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		FC7F5D012BCD232900EFE42B /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		FC7F5D032BCD233600EFE42B /* BasketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketViewController.swift; sourceTree = "<group>"; };
-		FC7F5D072BCDD6B500EFE42B /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		FC7F5D072BCDD6B500EFE42B /* Type+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Type+Extension.swift"; sourceTree = "<group>"; };
 		FC7F5D092BCEA03700EFE42B /* BasketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketManager.swift; sourceTree = "<group>"; };
 		FC7F5D0B2BCEA08B00EFE42B /* Notification.Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.Name.swift; sourceTree = "<group>"; };
 		FC7F5D0D2BCEB45200EFE42B /* StepperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepperManager.swift; sourceTree = "<group>"; };
@@ -112,7 +112,6 @@
 		FC8980162BC73221004250DB /* ProductCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCollectionViewCell.swift; sourceTree = "<group>"; };
 		FC89801A2BC73889004250DB /* ProductCellPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCellPresenter.swift; sourceTree = "<group>"; };
 		FC89801E2BC757B1004250DB /* PlusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusButton.swift; sourceTree = "<group>"; };
-		FC8D03272BD3E02400A0A944 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +119,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC8BE8472BD58B4600504102 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,9 +235,8 @@
 				FC7F5CF72BCB2A8A00EFE42B /* UIFont+Extension.swift */,
 				FC7F5CF92BCB2AB800EFE42B /* UILabel+Extension.swift */,
 				FC7F5CFF2BCC7BA100EFE42B /* UIButton+Extension.swift */,
-				FC7F5D072BCDD6B500EFE42B /* String+Extension.swift */,
+				FC7F5D072BCDD6B500EFE42B /* Type+Extension.swift */,
 				FC7F5D0B2BCEA08B00EFE42B /* Notification.Name.swift */,
-				FC8D03272BD3E02400A0A944 /* Array+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -343,6 +342,9 @@
 			dependencies = (
 			);
 			name = GetirFinalCase;
+			packageProductDependencies = (
+				FC8BE8462BD58B4600504102 /* Kingfisher */,
+			);
 			productName = GetirFinalCase;
 			productReference = FC840E422BC559810016A555 /* GetirFinalCase.app */;
 			productType = "com.apple.product-type.application";
@@ -415,6 +417,9 @@
 				Base,
 			);
 			mainGroup = FC840E392BC559810016A555;
+			packageReferences = (
+				FC8BE8452BD58B4600504102 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			productRefGroup = FC840E432BC559810016A555 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -460,7 +465,6 @@
 				FC7F5D042BCD233600EFE42B /* BasketViewController.swift in Sources */,
 				FC840E932BC5F5C70016A555 /* CartButton.swift in Sources */,
 				FC7F5CF62BCB12E400EFE42B /* ProductRequest.swift in Sources */,
-				FC8D03282BD3E02400A0A944 /* Array+Extension.swift in Sources */,
 				FC7F5D122BD1001B00EFE42B /* ProductDetailPresenter.swift in Sources */,
 				FC7F5D142BD1004100EFE42B /* ProductDetailRouter.swift in Sources */,
 				FC7F5CEF2BCAE64500EFE42B /* NetworkManager.swift in Sources */,
@@ -482,7 +486,7 @@
 				FC840E832BC55CEB0016A555 /* ProductListingPresenter.swift in Sources */,
 				FC7F5D022BCD232900EFE42B /* ProductDetailViewController.swift in Sources */,
 				FC840E872BC55D190016A555 /* ProductListingEntity.swift in Sources */,
-				FC7F5D082BCDD6B500EFE42B /* String+Extension.swift in Sources */,
+				FC7F5D082BCDD6B500EFE42B /* Type+Extension.swift in Sources */,
 				FC7F5CF82BCB2A8A00EFE42B /* UIFont+Extension.swift in Sources */,
 				FC7F5D1C2BD1D12200EFE42B /* HorizantalStepperButton.swift in Sources */,
 				FC840E8B2BC5E25D0016A555 /* CustomNavigationBar.swift in Sources */,
@@ -829,6 +833,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FC8BE8452BD58B4600504102 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.11.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FC8BE8462BD58B4600504102 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FC8BE8452BD58B4600504102 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FC840E3A2BC559810016A555 /* Project object */;
 }

@@ -9,10 +9,12 @@ import Foundation
 
 protocol ProductListingPresenterProtocol: AnyObject {
     func viewDidLoad()
+    func viewWillAppear()
     func cartUpdated(_ price:Double)
     func numberOfItems(in section: Int) -> Int
     func didSelectProduct(at index: Int, in section: Section)
     func product(for indexPath: IndexPath) -> Product?
+    func productImageURL(for indexPath: IndexPath) -> URL?
     
 }
 final class ProductListingPresenter {
@@ -22,7 +24,6 @@ final class ProductListingPresenter {
     
     
     private var products: [Section: [Product]] = [.horizontal: [], .vertical: []]
-    private var productImages: [Section: [ImageData]] = [.horizontal: [], .vertical: []]
     
     init(view: ProductListingViewProtocol,
          router: ProductListingRouterProtocol,
@@ -51,22 +52,6 @@ extension ProductListingPresenter: ProductListingPresenterProtocol {
         return productsList[safe: indexPath.item]
     }
 
-    func productImage(for indexPath: IndexPath) -> ImageData? {
-        guard let section = Section(rawValue: indexPath.section),
-              let imagesList = productImages[section] else {
-            print("Failed to load images for section: \(indexPath.section)")
-            return nil
-        }
-
-        if indexPath.item >= imagesList.count {
-            print("Index \(indexPath.item) out of range \(indexPath.section)")
-            return nil
-        }
-
-        print("Loaded image for item at \(indexPath.item) with URL: \(imagesList[indexPath.item].url)")
-        return imagesList[indexPath.item]
-    }
-
     private func product(withID productId: String) -> Product? {
         for productsList in products.values {
             if let product = productsList.first(where: { $0.id == productId }) {
@@ -75,11 +60,22 @@ extension ProductListingPresenter: ProductListingPresenterProtocol {
         }
         return nil
     }
+    func productImageURL(for indexPath: IndexPath) -> URL? {
+        guard let section = Section(rawValue: indexPath.section),
+              let product = products[section]?[indexPath.row] else {
+            return nil
+        }
+        return product.imageURLAsURL
+    }
     
     func viewDidLoad() {
         fetchProduct()
         addNotification()
         view?.setupNavBar()
+
+    }
+    
+    func viewWillAppear(){
         view?.configureCollectionView()
     }
     
@@ -102,6 +98,7 @@ extension ProductListingPresenter: ProductListingPresenterProtocol {
             var updatedProduct = product
             updatedProduct.quantity = count
             BasketManager.shared.addProduct(updatedProduct)
+            
         } else {
             BasketManager.shared.removeProduct(product)
         }
@@ -113,14 +110,24 @@ extension ProductListingPresenter: ProductListingPresenterProtocol {
         }
     }
     
-    func didSelectProduct(at index: Int, in section: Section) {
+    func didSelectProduct(at index: Int, in section: Section)  {
         guard let productsList = products[section],
-              index < productsList.count,
-              let imagesList = productImages[section],
-              index < imagesList.count else { return }
+              index < productsList.count else {
+            print("Index out of bounds or section not found.")
+            return
+        }
         let product = productsList[index]
-        let imageData = imagesList[index]
-        router?.navigate(.detail(product: product, imageData: imageData))
+
+        guard let imageURL = product.imageURLAsURL else {
+            print("Product image URL is missing.")
+            return
+        }
+        guard let url = imageURL.secureURL() else {
+                print("Invalid or non-secure URL.")
+                return
+            }
+
+        router?.navigate(.detail(product: product, imageData: url))
     }
     
     func didTapCartButton() {
@@ -135,23 +142,14 @@ extension ProductListingPresenter: ProductListingPresenterProtocol {
     
     func fetchProduct() {
         interactor?.fetchProducts()
-        interactor?.fetchSuggestedProduct()
-        
     }
 }
 
 extension ProductListingPresenter: ProductListingInteractorOutput {
-    func suggestedProductsFetchedSuccessfully(_ products: [Product], imageData: [ImageData]) {
-        self.products[.horizontal] = products
-        self.productImages[.horizontal] = imageData
-        DispatchQueue.main.async { [weak self] in
-            self?.view?.reloadProductList()
-        }
-    }
-    
-    func productsFetchedSuccessfully(_ products: [Product], imageData: [ImageData]) {
-        self.products[.vertical] = products
-        self.productImages[.vertical] = imageData
+
+    func productsFetchedSuccessfully(_ products: (regular: [Product], suggested: [Product])) {
+        self.products[.vertical] = products.regular
+        self.products[.horizontal] = products.suggested
         DispatchQueue.main.async { [weak self] in
             self?.view?.reloadProductList()
         }

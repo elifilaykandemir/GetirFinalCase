@@ -21,12 +21,12 @@ final class ProductDetailPresenter {
     var router: ProductDetailRouterProtocol?
     
     private var product: Product?
-    private var productImages: ImageData?
+    private var productImages: URL?
     
     init(view: ProductDetailViewProtocol,
          router: ProductDetailRouterProtocol,
          product: Product,
-         productImage: ImageData?
+         productImage: URL?
     )
     {
         self.view = view
@@ -79,10 +79,10 @@ extension ProductDetailPresenter:ProductDetailPresenterProtocol {
         }
     }
     private func displayImage() {
-        if let imageData = productImages, let data = imageData.data {
-            view?.setImage(image: data)
+        if let image = productImages {
+            view?.setImage(image: image)
         } else {
-            view?.imageNotFound()
+            print("Image not found")
         }
     }
 

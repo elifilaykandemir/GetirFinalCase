@@ -14,27 +14,26 @@ protocol ProductCellPresenterProtocol: AnyObject {
 final class ProductCellPresenter {
     weak var view: ProductCellProtocol?
     private var product: Product
-    private var images: ImageData
+    private let imageURL: URL?
     
     
     
-    init(view: ProductCellProtocol? = nil, product: Product, images:ImageData) {
+    init(view: ProductCellProtocol? = nil, product: Product, imageURL: URL?) {
         self.view = view
         self.product = product
-        self.images = images
+        self.imageURL = imageURL
     }
     
 }
 extension ProductCellPresenter: ProductCellPresenterProtocol {
  
     func load() {
-        self.view?.setImage(images.data)
+        view?.setImage(from: imageURL)
         self.view?.setPriceLabel(product.price)
         self.view?.setProductNameLabel(product.name)
         self.view?.setAttributeLabel(product.attribute ?? "")
         self.view?.setProductID(product.id)
-        let currentCount = StepperCountManager.shared.getCount(for: product.id)
-        self.view?.setStepperState(isExpanded: currentCount > 0, quantity: currentCount)
+
     }
 
 }

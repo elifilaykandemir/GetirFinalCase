@@ -63,9 +63,11 @@ final class DetailView: UIView {
         setupConstraints()
         setupView()
     }
+    
     private func setupView() {
         addBottomShadow()
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -89,22 +91,17 @@ final class DetailView: UIView {
             trailingAnchor: trailingAnchor,trailingConstant: -16,
             centerXAnchor: self.centerXAnchor
         )
-        
-
     }
+    
     func configureView(priceText:String,productText:String, attirubuteText:String){
         priceLabel.text = priceText
         productNameLabel.text = productText
         attributeLabel.text = attirubuteText
     }
-    func setImage(_ imageData: Data?) {
-        DispatchQueue.main.async {
-            
-            if let data = imageData, let image = UIImage(data: data) {
-                self.productImageView.image = image
-            } else {
-                self.productImageView.image = UIImage(named: "defaultImage")
-            }
+    
+    func setImage(_ imageData: URL?) {
+        if let url = imageData {
+            productImageView.kf.setImage(with: url)
         }
     }
 }

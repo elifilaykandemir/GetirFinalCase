@@ -9,8 +9,7 @@ import UIKit
 
 protocol ProductDetailViewProtocol: AnyObject {
     func displayProductDetail(priceText: String, productText: String, attText: String)
-    func setImage(image:Data)
-    func imageNotFound()
+    func setImage(image:URL?)
     func refreshCartAmount(_ amount: Double)
     func cartButtonAction()
     func addToBasketButtonAction()
@@ -77,16 +76,12 @@ final class ProductDetailViewController: UIViewController {
 }
 extension ProductDetailViewController : ProductDetailViewProtocol {
     
-    func imageNotFound() {
-        contentView.setImage(UIImage(named: "defaultImage")?.pngData())
-    }
-    
     func displayProductDetail( priceText: String, productText: String, attText: String) {
         contentView.configureView(priceText: priceText, productText: productText, attirubuteText: attText
         )
     }
     
-    func setImage(image:Data) {
+    func setImage(image:URL?) {
         contentView.setImage(image)
     }
     

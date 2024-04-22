@@ -21,7 +21,7 @@ final class ProductDetailRouter {
     
     weak var viewController: ProductDetailViewController?
     
-    static func createModule(with product: Product, imageData: ImageData?) -> ProductDetailViewController {
+    static func createModule(with product: Product, imageData: URL?) -> ProductDetailViewController {
         
         let view = ProductDetailViewController()
         let router = ProductDetailRouter()
