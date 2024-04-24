@@ -13,6 +13,7 @@ enum ProductDetailRoutes {
     case basket
    
 }
+
 protocol ProductDetailRouterProtocol: AnyObject {
     func navigate(_ route: ProductDetailRoutes)
 }
@@ -26,13 +27,12 @@ final class ProductDetailRouter {
         let view = ProductDetailViewController()
         let router = ProductDetailRouter()
         
-        let presenter = ProductDetailPresenter(view: view, router: router,product: product, productImage:imageData)
+        let presenter = ProductDetailPresenter(view: view, router: router, product: product, productImage:imageData)
         view.presenter = presenter
         router.viewController = view
    
         return view
     }
-    
 }
 
 extension ProductDetailRouter: ProductDetailRouterProtocol {
@@ -47,5 +47,4 @@ extension ProductDetailRouter: ProductDetailRouterProtocol {
             viewController?.present(basketVC, animated: true)
         }
     }
-    
 }

@@ -17,7 +17,6 @@ class CustomButton: UIButton {
         commonInit()
     }
 
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -29,7 +28,6 @@ class CustomButton: UIButton {
         }
        
         backgroundColor = .white
-        
         layer.cornerRadius = 6
         layer.borderWidth = 0.5
         layer.borderColor = UIColor.white.cgColor
@@ -40,5 +38,4 @@ class CustomButton: UIButton {
         layer.shadowOpacity = 0.3
         layer.masksToBounds = false
     }
-    
 }

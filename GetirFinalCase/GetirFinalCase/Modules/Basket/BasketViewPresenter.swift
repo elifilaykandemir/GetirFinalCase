@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 protocol BasketViewPresenterProtocol: AnyObject {
     
     func viewDidLoad()
@@ -50,7 +49,7 @@ extension BasketViewPresenter: BasketViewPresenterProtocol {
         addNotification()
         view?.closeButtonAction()
         view?.trashButtonAction()
-        view?.checkOutButtonAction()
+        view?.checkoutButtonAction()
         view?.didTapAlertConfirmAction()
         view?.didTapSuccessViewOkButtonAction()
         loadAllProduct()
@@ -59,7 +58,6 @@ extension BasketViewPresenter: BasketViewPresenterProtocol {
     func viewWillAppear(){
         view?.configureCollectionView()
     }
-    
     
     func addNotification(){
         NotificationCenter.default.addObserver(self, selector: #selector(handleStepperChange(_:)), name: .stepperCountDidChange, object: nil)
@@ -72,7 +70,6 @@ extension BasketViewPresenter: BasketViewPresenterProtocol {
         return products[sectionType]?.count ?? 0
     }
    
-    
     func didTapConfirmButton() {
         BasketManager.shared.clearBasket()
         StepperCountManager.shared.resetAllCounts()
@@ -84,6 +81,7 @@ extension BasketViewPresenter: BasketViewPresenterProtocol {
     func didTapCloseButton(){
         router?.navigate(.dismiss)
     }
+    
     func didTapOkButton() {
         BasketManager.shared.clearBasket()
         StepperCountManager.shared.resetAllCounts()
@@ -91,6 +89,7 @@ extension BasketViewPresenter: BasketViewPresenterProtocol {
             self.router?.navigate(.list)
         }
     }
+    
     func fetchProduct() {
         interactor?.fetchProducts()
     }
@@ -99,7 +98,6 @@ extension BasketViewPresenter: BasketViewPresenterProtocol {
         let allProducts = BasketManager.shared.getAllProducts()
         products[.vertical] = allProducts
     }
-
 }
 extension BasketViewPresenter {
     

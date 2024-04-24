@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 extension Notification.Name {
     static let basketDidUpdate = Notification.Name("basketUpdate")
     static let stepperCountDidChange = Notification.Name("stepperCountDidChange")

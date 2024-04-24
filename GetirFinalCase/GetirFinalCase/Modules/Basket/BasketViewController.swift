@@ -17,19 +17,16 @@ protocol BasketViewProtocol: AnyObject {
     func configureCollectionView()
     func closeButtonAction()
     func trashButtonAction()
-    func checkOutButtonAction()
+    func checkoutButtonAction()
     func didTapAlertConfirmAction()
     func didTapSuccessViewOkButtonAction()
 }
 
 final class BasketViewController: UIViewController{
     
-    
-    
     var presenter: BasketViewPresenter!
-    
     private lazy var customNavBar = BasketNavigationBar(title: "Sepetim")
-    private lazy var checkOutView = CheckOutView()
+    private lazy var checkoutView = CheckoutView()
     
     private lazy var customAlert : CustomAlertView = {
         let alertView = CustomAlertView()
@@ -92,6 +89,7 @@ extension BasketViewController: UICollectionViewDataSource, UICollectionViewDele
 }
 
 extension BasketViewController {
+    
     private func createLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
             guard let self = self else { return nil }
@@ -103,6 +101,7 @@ extension BasketViewController {
         )
         return layout
     }
+    
     private func createVerticalSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
@@ -153,24 +152,23 @@ extension BasketViewController: BasketViewProtocol {
             topAnchor: customNavBar.bottomAnchor,
             topConstant: 16,
             trailingAnchor: view.trailingAnchor,
-            bottomAnchor: checkOutView.topAnchor
+            bottomAnchor: checkoutView.topAnchor
         )
         collectionView.backgroundColor = .systemGray6
         collectionView.delegate = self
         collectionView.dataSource = self
-        
     }
     
     func setupConstraint(){
         view.addSubview(customNavBar)
-        view.addSubview(checkOutView)
+        view.addSubview(checkoutView)
         customNavBar.setupConstraints(
             leadingAnchor: view.leadingAnchor,
             topAnchor: view.safeAreaLayoutGuide.topAnchor,
             trailingAnchor: view.trailingAnchor,
             height: 24
         )
-        checkOutView.setupConstraints(
+        checkoutView.setupConstraints(
             leadingAnchor: view.leadingAnchor,
             trailingAnchor: view.trailingAnchor,
             bottomAnchor: view.bottomAnchor,
@@ -183,36 +181,38 @@ extension BasketViewController: BasketViewProtocol {
             self.collectionView.reloadData()
         }
     }
-
+    
     func trashButtonAction() {
         customNavBar.onTrashButtonTapped = { [weak self] in
             guard let self else { return }
             self.present(customAlert, animated: true, completion: nil)
         }
     }
-    func checkOutButtonAction(){
-        checkOutView.onCheckoutButtonTapped = { [weak self] in
+    
+    func checkoutButtonAction(){
+        checkoutView.onCheckoutButtonTapped = { [weak self] in
             guard let self else { return }
             present(successView, animated: true, completion: nil)
         }
-        
     }
+    
     func didTapAlertConfirmAction(){
         customAlert.onTapConfirm = { [weak self] in
             guard let self else { return }
             presenter.didTapConfirmButton()
         }
     }
+    
     func closeButtonAction(){
         customNavBar.onCloseTapped = { [weak self] in
             self?.presenter.didTapCloseButton()
         }
     }
+    
     func didTapSuccessViewOkButtonAction(){
         successView.onTapOk = { [weak self] in
             guard let self else { return }
             presenter.didTapOkButton()
         }
     }
-    
 }

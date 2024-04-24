@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class CheckOutView: UIView {
+final class CheckoutView: UIView {
     
     var onCheckoutButtonTapped: (() -> Void)?
     
-    private lazy var checkOutLabel: UILabel = {
+    private lazy var checkoutLabel: UILabel = {
         let label = UILabel()
         label.text = "Siparişi Tamamla"
         label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
@@ -37,7 +37,7 @@ final class CheckOutView: UIView {
     }()
     
     private lazy var checkoutButton: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [checkOutLabel, priceLabel])
+        let stack = UIStackView(arrangedSubviews: [checkoutLabel, priceLabel])
         stack.axis = .horizontal
         stack.alignment = .center
         stack.distribution = .fillProportionally
@@ -91,7 +91,7 @@ final class CheckOutView: UIView {
             bottomAnchor:checkoutButton.bottomAnchor
         
         )
-        checkOutLabel.setupConstraints(
+        checkoutLabel.setupConstraints(
             leadingAnchor: checkoutButton.leadingAnchor,
             topAnchor:checkoutButton.topAnchor,
             bottomAnchor:checkoutButton.bottomAnchor

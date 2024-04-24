@@ -24,7 +24,8 @@ final class BasketCollectionViewCell: UICollectionViewCell {
             presenter.load()
         }
     }
-    lazy var stepperButton : HorizontalStepperButton = {
+    
+    private lazy var stepperButton : HorizontalStepperButton = {
         let button = HorizontalStepperButton()
         return button
     }()
@@ -134,9 +135,9 @@ extension BasketCollectionViewCell : BasketCellProtocol {
     
     func setImage(from url: URL?) {
         guard let url = url?.secureURL() else {
-                print("Invalid or nonsecure URL.")
-                return
-            }
+            print("Invalid or nonsecure URL.")
+            return
+        }
         imageView.kf.setImage(with: url)
     }
     
@@ -158,5 +159,4 @@ extension BasketCollectionViewCell : BasketCellProtocol {
         }
         
     }
-    
 }

@@ -11,10 +11,6 @@ final class CustomNavigationBar: UIView {
     var onCartButtonTapped: (() -> Void)?
     var onCloseTapped: (() -> Void)?
     
-    func updateCartVisibility(shouldShowCartButton: Bool) {
-        cartButton.isHidden = !shouldShowCartButton
-    }
-    
     private lazy var titleLabel : UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
@@ -74,6 +70,10 @@ final class CustomNavigationBar: UIView {
             trailingAnchor: trailingAnchor,trailingConstant: -8,
             bottomAnchor: bottomAnchor
         )
+    }
+    
+    func updateCartVisibility(shouldShowCartButton: Bool) {
+        cartButton.isHidden = !shouldShowCartButton
     }
     
     func updateCartAmount(to amount: Double) {

@@ -23,9 +23,7 @@ final class PlusButton: UIButton {
         if let plusImage = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .bold))?.withTintColor(.primary, renderingMode: .alwaysOriginal) {
             setImage(plusImage, for: .normal)
         }
-       
         backgroundColor = .white
-        
         layer.cornerRadius = 6
         layer.borderWidth = 0.5
         layer.borderColor = UIColor.white.cgColor

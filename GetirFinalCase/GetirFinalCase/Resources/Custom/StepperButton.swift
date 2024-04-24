@@ -47,7 +47,6 @@ final class StepperButton: UIView {
         return label
     }()
 
-    
     private lazy var containerStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -56,7 +55,6 @@ final class StepperButton: UIView {
         stackView.addArrangedSubview(trashButton)
         return stackView
     }()
-    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -142,7 +140,6 @@ final class StepperButton: UIView {
         countLabel.isHidden = self.count == 0
         trashButton.isHidden = self.count == 0
     }
-    
     
     private func setupStackView() {
         addSubview(containerStackView)
