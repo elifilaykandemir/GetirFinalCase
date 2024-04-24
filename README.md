@@ -10,7 +10,7 @@
 
 
 ## General Info and App Screen
-This is an iOS Project using Programlamatic UIKit for Getir iOS Bootcamp. It features a two-page layout displaying products and banners, along with a detailed product page.
+This is an iOS Project using Programlamatic UIKit for Getir iOS Bootcamp. This case consists of three pages: the product list, product detail page, and the basket page.
 - **First Screen**: Utilizes a compositional layout to display a collection of products. It's divided into two sections: recommended products and a comprehensive product list, each offering a dynamic user experience.
 - **Second Screen**: Provides detailed information about the products, including total price visualization and an interactive basket where users can add products.
 - **Third Screen**: A cart page where users can review all items added to the basket, implemented with a compositional layout to enhance usability.
