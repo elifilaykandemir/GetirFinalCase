@@ -85,6 +85,7 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         setupCell()
         presenter?.load()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -123,13 +124,13 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         imageView.image = nil
         stepperButton.reset()
-        updateBorderFor(isExpanded: false)
+        //updateBorderFor(isExpanded: false)
         
     }
 }
 
 extension ProductCollectionViewCell: ProductCellProtocol {
-    
+   
     func setImage(from url: URL?) {
         guard let url = url?.secureURL() else {
             print("Invalid or non-secure URL.")
@@ -169,9 +170,14 @@ extension ProductCollectionViewCell: ProductCellProtocol {
         let isExpanded = count > 0
         setStepperState(isExpanded: isExpanded, quantity: count)
     }
+
 }
 
 extension ProductCollectionViewCell: StepperButtonDelegate {
+    
+    func didTapTrashButton(with isExpanded: Bool) {
+        updateBorderFor(isExpanded: isExpanded)
+    }
     
     func didTapButton(with isExpanded: Bool) {
         updateBorderFor(isExpanded: isExpanded)
@@ -184,5 +190,6 @@ extension ProductCollectionViewCell: StepperButtonDelegate {
     func setStepperState(isExpanded: Bool, quantity: Int) {
         stepperButton.isExpanded = isExpanded
         stepperButton.count = quantity
+        updateBorderFor(isExpanded: isExpanded)
     }
 }

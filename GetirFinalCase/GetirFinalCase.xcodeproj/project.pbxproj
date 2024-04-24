@@ -57,6 +57,7 @@
 		FC90E9322BD6A80100ADCC7A /* CustomSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC90E9312BD6A80100ADCC7A /* CustomSuccessView.swift */; };
 		FC90E93B2BD6DBD400ADCC7A /* BasketCellPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC90E9392BD6DBD400ADCC7A /* BasketCellPresenter.swift */; };
 		FC90E93C2BD6DBD400ADCC7A /* BasketCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC90E93A2BD6DBD400ADCC7A /* BasketCollectionViewCell.swift */; };
+		FC95F9152BD9274100C24847 /* BasketManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC95F9142BD9274100C24847 /* BasketManagerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -130,6 +131,7 @@
 		FC90E9312BD6A80100ADCC7A /* CustomSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSuccessView.swift; sourceTree = "<group>"; };
 		FC90E9392BD6DBD400ADCC7A /* BasketCellPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasketCellPresenter.swift; sourceTree = "<group>"; };
 		FC90E93A2BD6DBD400ADCC7A /* BasketCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasketCollectionViewCell.swift; sourceTree = "<group>"; };
+		FC95F9142BD9274100C24847 /* BasketManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketManagerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				FC840E5F2BC559820016A555 /* GetirFinalCaseTests.swift */,
+				FC95F9142BD9274100C24847 /* BasketManagerTests.swift */,
 			);
 			path = GetirFinalCaseTests;
 			sourceTree = "<group>";
@@ -549,6 +552,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC840E602BC559820016A555 /* GetirFinalCaseTests.swift in Sources */,
+				FC95F9152BD9274100C24847 /* BasketManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

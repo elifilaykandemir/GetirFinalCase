@@ -2,6 +2,7 @@ import UIKit
 
 protocol StepperButtonDelegate: AnyObject {
     func didTapButton(with: Bool)
+    func didTapTrashButton(with:Bool)
 }
 final class StepperButton: UIView {
     
@@ -108,7 +109,7 @@ final class StepperButton: UIView {
         if count <= 1 {
             isExpanded = false
             updateExpandButton()
-            delegate?.didTapButton(with: isExpanded)
+            delegate?.didTapTrashButton(with: isExpanded)
         }
     }
     

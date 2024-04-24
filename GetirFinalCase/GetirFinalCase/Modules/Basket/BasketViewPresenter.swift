@@ -117,6 +117,7 @@ extension BasketViewPresenter {
         }
         return nil
     }
+    
     func productImageURL(for indexPath: IndexPath) -> URL? {
         guard let section = Section(rawValue: indexPath.section),
               let product = products[section]?[indexPath.row] else {
@@ -147,6 +148,9 @@ extension BasketViewPresenter {
     
     @objc private func basketDidUpdated(notification: Notification) {
         if let newPrice = notification.userInfo?["newPrice"] as? Double {
+            if newPrice == 0 {
+                self.router?.navigate(.list)
+            }
         }
     }
 }
@@ -155,18 +159,9 @@ extension BasketViewPresenter: BasketViewInteractorOutput {
 
     func productsFetchedSuccessfully(suggested: [Product]) {
         self.products[.horizontal] = suggested
-        DispatchQueue.main.async { [weak self] in
-            self?.view?.reloadProductList()
-        }
     }
     
     func productsFetchFailed(withError: Error) {
         print("Product fetch failed with error: \(withError)")
     }
 }
-
-
-    
-    
-    
-    

@@ -65,4 +65,20 @@ struct Product: Codable {
         isExpanded = false
         quantity = 0
     }
+    init(id: String, name: String, price: Double, priceText: String, imageURL: String?, thumbnailURL: String?, shortDescription: String?, category: String?, attribute: String?, unitPrice: Double?, squareThumbnailURL: String?, status: Int?, isExpanded: Bool, quantity: Int) {
+            self.id = id
+            self.name = name
+            self.price = price
+            self.priceText = priceText
+            self.imageURL = imageURL
+            self.thumbnailURL = thumbnailURL
+            self.shortDescription = shortDescription
+            self.category = category
+            self.attribute = attribute
+            self.unitPrice = unitPrice
+            self.squareThumbnailURL = squareThumbnailURL
+            self.status = status
+            self.isExpanded = isExpanded
+            self.quantity = quantity
+        }
 }

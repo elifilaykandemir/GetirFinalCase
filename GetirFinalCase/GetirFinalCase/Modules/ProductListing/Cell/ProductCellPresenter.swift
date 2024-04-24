@@ -33,7 +33,7 @@ extension ProductCellPresenter: ProductCellPresenterProtocol {
         self.view?.setProductNameLabel(product.name)
         self.view?.setAttributeLabel(product.attribute ?? "")
         self.view?.setProductID(product.id)
-
+    
     }
 
 }

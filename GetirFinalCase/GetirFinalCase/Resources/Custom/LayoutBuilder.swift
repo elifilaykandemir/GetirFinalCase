@@ -58,3 +58,14 @@ class SectionBackroundView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+class DividerView: UICollectionReusableView {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = UIColor.primaryGray 
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}

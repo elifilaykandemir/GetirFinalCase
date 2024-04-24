@@ -34,15 +34,14 @@ final class ProductListingViewController: UIViewController {
         view.backgroundColor = .primary
         setupConstraint()
         presenter.viewDidLoad()
-        
-        
     }
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        presenter.viewWillAppear()
-        
-    }
+            super.viewWillAppear(animated)
+            presenter.viewWillAppear()
+            
+        }
 }
+
 extension ProductListingViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {

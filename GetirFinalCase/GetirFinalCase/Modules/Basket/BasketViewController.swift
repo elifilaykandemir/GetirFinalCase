@@ -22,7 +22,9 @@ protocol BasketViewProtocol: AnyObject {
     func didTapSuccessViewOkButtonAction()
 }
 
-final class BasketViewController: UIViewController {
+final class BasketViewController: UIViewController{
+    
+    
     
     var presenter: BasketViewPresenter!
     
@@ -45,6 +47,7 @@ final class BasketViewController: UIViewController {
     
     private lazy var collectionView = UICollectionView()
     static let background = "background-element-kind"
+    static let dividerSupplementaryKind = "divider-supplementary-kind"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,6 +80,15 @@ extension BasketViewController: UICollectionViewDataSource, UICollectionViewDele
         }
         return cell
     }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+            switch kind {
+            case BasketViewController.dividerSupplementaryKind:
+                let dividerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "DividerBorderView", for: indexPath)
+                return dividerView
+            default:
+                fatalError("Unexpected element kind")
+            }
+        }
 }
 
 extension BasketViewController {
@@ -103,19 +115,26 @@ extension BasketViewController {
             bottom: 8,
             trailing: 8
         )
+        let dividerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(1))
+        let dividerSupplementary = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: dividerSize, elementKind: BasketViewController.dividerSupplementaryKind, alignment: .bottom)
+        dividerSupplementary.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+        
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(110)
+            heightDimension: .absolute(110 + 2)
         )
         let group = NSCollectionLayoutGroup.vertical(
                 layoutSize: groupSize,
                 subitems: [item]
         )
+        group.supplementaryItems = [dividerSupplementary]
+       
         let section = NSCollectionLayoutSection(group: group)
         let sectionBackground = NSCollectionLayoutDecorationItem.background(
             elementKind: BasketViewController.background)
         
         section.decorationItems = [sectionBackground]
+    
         return section
     }
 }
@@ -127,6 +146,7 @@ extension BasketViewController: BasketViewProtocol {
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = .systemBackground
         collectionView.register(BasketCollectionViewCell.self, forCellWithReuseIdentifier: BasketCollectionViewCell.identifier)
+        collectionView.register(DividerView.self, forSupplementaryViewOfKind: BasketViewController.dividerSupplementaryKind, withReuseIdentifier: "DividerBorderView")
         view.addSubview(collectionView)
         collectionView.setupConstraints(
             leadingAnchor:view.leadingAnchor,

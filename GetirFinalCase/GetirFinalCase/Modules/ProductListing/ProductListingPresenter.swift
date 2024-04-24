@@ -39,7 +39,6 @@ final class ProductListingPresenter {
     }
 }
 
-// MARK: - ProductListingPresenterProtocol Implementation
 extension ProductListingPresenter: ProductListingPresenterProtocol {
     
     func numberOfItems(in section: Int) -> Int {
@@ -73,9 +72,8 @@ extension ProductListingPresenter: ProductListingPresenterProtocol {
         fetchProduct()
         addNotification()
         view?.setupNavBar()
-
+        //view?.configureCollectionView()
     }
-    
     func viewWillAppear(){
         view?.configureCollectionView()
     }
