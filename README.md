@@ -45,7 +45,6 @@ The project uses the following dependencies:
 
 - **Kingfisher**: This powerful, pure-Swift library is perfect for downloading and caching images from the web. It simplifies the task of fetching images asynchronously and storing them in a cache for quick access, enhancing the performance and responsiveness of the application.
 
-To integrate Kingfisher into your project using Swift Package Manager, you can add the following to your `Package.swift`:
 
 ## Setup
 Setting up the project is straightforward thanks to Swift Package Manager. There's no need for manual downloads or dependency management scripts.
