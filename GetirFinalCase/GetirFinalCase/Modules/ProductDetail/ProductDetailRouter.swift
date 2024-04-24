@@ -40,14 +40,11 @@ extension ProductDetailRouter: ProductDetailRouterProtocol {
     func navigate(_ route: ProductDetailRoutes) {
         switch route {
         case .list:
-            let vc = ProductDetailViewController()
             viewController?.dismiss(animated: true)
         case .basket:
-            //TODO: Open basket page
-//            let basketVC = basketRouter.createModule()
-//            viewController?.navigationController?.pushViewController(basketVC, animated: true)
-            let vc = BasketViewController()
-            viewController?.navigationController?.pushViewController(vc, animated: true)
+            let basketVC = BasketViewRouter.createModule()
+            basketVC.modalPresentationStyle = .fullScreen
+            viewController?.present(basketVC, animated: true)
         }
     }
     

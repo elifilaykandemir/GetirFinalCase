@@ -25,21 +25,31 @@ final class BasketManager {
         } else {
             products[product.id] = product
         }
-        calculateTotalPrice()
+        totalPrice()
         
     }
     
     func removeProduct(_ product: Product) {
-        if let existingProduct = products[product.id], existingProduct.quantity > product.quantity {
-            products[product.id]?.quantity = product.quantity
-        } else {
-            products.removeValue(forKey: product.id)
+        guard let existingProduct = products[product.id] else {
+            return
         }
-        calculateTotalPrice()
+        if existingProduct.quantity > 0 {
+            products[product.id]?.quantity = 0
+        }
+        products.removeValue(forKey: product.id)
+        totalPrice()
     }
     
-    private func calculateTotalPrice() {
+    func getAllProducts() -> [Product] {
+        return Array(products.values)
+    }
+    
+    func clearBasket() {
+        products.removeAll()
+        totalPrice()
+    }
+    
+    private func totalPrice() {
         NotificationCenter.default.post(name: .basketDidUpdate, object: nil, userInfo: ["newPrice": total])
     }
-    
 }

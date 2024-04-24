@@ -18,6 +18,7 @@ protocol ProductListingPresenterProtocol: AnyObject {
     
 }
 final class ProductListingPresenter {
+    
     weak var view: ProductListingViewProtocol?
     var interactor: ProductListingInteractorProtocol?
     var router: ProductListingRouterProtocol?
@@ -113,7 +114,7 @@ extension ProductListingPresenter: ProductListingPresenterProtocol {
     func didSelectProduct(at index: Int, in section: Section)  {
         guard let productsList = products[section],
               index < productsList.count else {
-            print("Index out of bounds or section not found.")
+            print("Index out of section not found.")
             return
         }
         let product = productsList[index]
@@ -123,10 +124,9 @@ extension ProductListingPresenter: ProductListingPresenterProtocol {
             return
         }
         guard let url = imageURL.secureURL() else {
-                print("Invalid or non-secure URL.")
+                print("Invalid or nonsecure URL.")
                 return
             }
-
         router?.navigate(.detail(product: product, imageData: url))
     }
     
@@ -142,6 +142,10 @@ extension ProductListingPresenter: ProductListingPresenterProtocol {
     
     func fetchProduct() {
         interactor?.fetchProducts()
+    }
+    func updateCartButtonVisibility() {
+        let displayCartButton = BasketManager.shared.total > 0
+        view?.updateCartVisibility(shouldShowCartButton: displayCartButton)
     }
 }
 

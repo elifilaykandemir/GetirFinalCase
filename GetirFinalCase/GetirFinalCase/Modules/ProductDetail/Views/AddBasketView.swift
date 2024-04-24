@@ -22,9 +22,8 @@ final class AddBasketView: UIView {
         return button
     }()
     
-    
-    private lazy var stepperButton : HorizantalStepperButton = {
-        let button = HorizantalStepperButton()
+    private lazy var stepperButton : HorizontalStepperButton = {
+        let button = HorizontalStepperButton()
         button.isHidden = true
         return button
     }()
@@ -50,8 +49,7 @@ final class AddBasketView: UIView {
             leadingAnchor: leadingAnchor, leadingConstant: 16,
             topAnchor:topAnchor, topConstant: 16,
             trailingAnchor: trailingAnchor, trailingConstant: -16,
-            bottomAnchor: bottomAnchor, bottomConstant: -40,
-            centerXAnchor:centerXAnchor
+            height: 48, centerXAnchor:centerXAnchor
         )
         stepperButton.setupConstraints(
             topAnchor:topAnchor, topConstant: 16,
@@ -59,24 +57,10 @@ final class AddBasketView: UIView {
             centerXAnchor:centerXAnchor
         )
     }
-    @objc func addToBasketButtonTapped(){
-        let productId = stepperButton.productId
-        
-        let currentCount = StepperCountManager.shared.getCount(for: productId)
-        if currentCount == 0 {
-            StepperCountManager.shared.setCount(for: productId, to: 1)
-            stepperButton.count = 1
-        } else {
-            StepperCountManager.shared.incrementCount(for: productId)
-            stepperButton.count = currentCount + 1
-        }
-        updateViewForCurrentCount()
-        onAddBasketButtonTapped?()
-    }
     
     func setupStepperButton() {
-        stepperButton.onDisplayedChanged = { [weak self] isHidden in
-            self?.handleStepperDisplayChanged(isHidden)
+        stepperButton.onDisplayedChanged = { [weak self] isEmpty in
+            self?.handleStepperDisplayChanged(isEmpty)
         }
     }
     
@@ -85,19 +69,26 @@ final class AddBasketView: UIView {
         updateViewForCurrentCount()
     }
     
-    func updateViewForCurrentCount() {
+    private func updateViewForCurrentCount() {
         let currentCount = StepperCountManager.shared.getCount(for: stepperButton.productId)
         updateViewForCount(currentCount)
     }
     
-    func updateViewForCount(_ count: Int) {
+    private func updateViewForCount(_ count: Int) {
         stepperButton.count = count
-        let hideStepper = count == 0
-        handleStepperDisplayChanged(hideStepper)
+        handleStepperDisplayChanged(count == 0)
     }
     
-    private func handleStepperDisplayChanged(_ isHide: Bool) {
-        addBasketButton.isHidden = !isHide
-        stepperButton.isHidden = isHide
+    private func handleStepperDisplayChanged(_ isHideStepper: Bool) {
+        stepperButton.isHidden = isHideStepper
+        addBasketButton.isHidden = !isHideStepper
+    }
+    
+    @objc func addToBasketButtonTapped() {
+        let productId = stepperButton.productId
+        StepperCountManager.shared.setCount(for: productId, to: 1)
+        stepperButton.count = 1
+        updateViewForCurrentCount()
+        onAddBasketButtonTapped?()
     }
 }

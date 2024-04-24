@@ -44,11 +44,10 @@ extension ProductListingRouter: ProductListingRouterProtocol {
             productDetailVC.modalPresentationStyle = .fullScreen
             viewController?.present(productDetailVC, animated: true)
         case .basket:
-            //TODO: Mock Data
-            //let basketVC = basketRouter.createModule()
-            // viewController?.navigationController?.pushViewController(basketVC, animated: true)
-            let vc = BasketViewController()
-            viewController?.navigationController?.pushViewController(vc, animated: true)
+            let basketVC = BasketViewRouter.createModule()
+            basketVC.modalPresentationStyle = .fullScreen
+            viewController?.present(basketVC, animated: true)
+
         }
     }
 }

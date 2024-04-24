@@ -17,7 +17,7 @@ struct CategoryResponse: Codable {
 struct SuggestedProducts: Decodable {
     let products: [Product]?
     let id: String
-    let name: String
+    let name: String?
 }
 
 struct Product: Codable {

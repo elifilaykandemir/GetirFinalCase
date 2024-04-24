@@ -15,7 +15,6 @@ protocol ProductCellProtocol: AnyObject {
     func setAttributeLabel(_ text: String)
     func setStepperState(isExpanded: Bool, quantity: Int)
     func setProductID(_ id: String)
-    
 }
 
 final class ProductCollectionViewCell: UICollectionViewCell {
@@ -26,12 +25,11 @@ final class ProductCollectionViewCell: UICollectionViewCell {
             presenter.load()
         }
     }
-    lazy var stepperButton : StepperButton = {
+    private lazy var stepperButton : StepperButton = {
         let button = StepperButton()
         button.delegate = self
         return button
     }()
-    
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -87,7 +85,6 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         setupCell()
         presenter?.load()
-        
     }
     
     required init?(coder: NSCoder) {
@@ -120,7 +117,6 @@ final class ProductCollectionViewCell: UICollectionViewCell {
             trailingAnchor: contentView.trailingAnchor,trailingConstant: -10,
             bottomAnchor: contentView.bottomAnchor,bottomConstant: -8
         )
-        
     }
     
     override func prepareForReuse() {
@@ -133,26 +129,26 @@ final class ProductCollectionViewCell: UICollectionViewCell {
 }
 
 extension ProductCollectionViewCell: ProductCellProtocol {
-
+    
     func setImage(from url: URL?) {
         guard let url = url?.secureURL() else {
-                print("Invalid or non-secure URL.")
-                return 
-            }
+            print("Invalid or non-secure URL.")
+            return
+        }
         imageView.kf.indicatorType = .activity
-           imageView.kf.setImage(
-               with: url,
-               placeholder: UIImage(named: "default"),
-               options: [
-                   .transition(.fade(0.2)),
-                   .cacheOriginalImage
-               ])
+        imageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "default"),
+            options: [
+                .transition(.fade(0.2)),
+                .cacheOriginalImage
+            ])
     }
+    
     func setPriceLabel(_ text: Double) {
         DispatchQueue.main.async { [weak self] in
             self?.priceLabel.text = String(format: "₺%.2f", text)
         }
-       
     }
     
     func setProductNameLabel(_ text: String) {
@@ -166,15 +162,15 @@ extension ProductCollectionViewCell: ProductCellProtocol {
             self?.attributeLabel.text = text
         }
     }
+    
     func setProductID(_ id: String) {
         stepperButton.productId = id
         let count = StepperCountManager.shared.getCount(for: id)
         let isExpanded = count > 0
         setStepperState(isExpanded: isExpanded, quantity: count)
     }
-    
-    
 }
+
 extension ProductCollectionViewCell: StepperButtonDelegate {
     
     func didTapButton(with isExpanded: Bool) {
@@ -188,8 +184,5 @@ extension ProductCollectionViewCell: StepperButtonDelegate {
     func setStepperState(isExpanded: Bool, quantity: Int) {
         stepperButton.isExpanded = isExpanded
         stepperButton.count = quantity
-
-        
     }
-
 }

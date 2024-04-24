@@ -58,7 +58,6 @@ final class DetailView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
-        
         setupStackView()
         setupConstraints()
         setupView()

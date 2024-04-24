@@ -61,11 +61,26 @@ final class StepperButton: UIView {
         super.init(frame: frame)
         setupStackView()
         setupConstraints()
-        
+        setupObservers()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    private func setupObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleCountChange(notification:)), name: .stepperCountDidChange, object: nil)
+    }
+    @objc private func handleCountChange(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let id = userInfo["productId"] as? String,
+              id == productId else {
+            return
+        }
+        let newCount = userInfo["newCount"] as? Int ?? 0
+        DispatchQueue.main.async {
+            self.countLabel.text = "\(newCount)"
+            self.updateButtonAppearance()
+        }
     }
     
     private func initialExpand() {
@@ -77,7 +92,6 @@ final class StepperButton: UIView {
     
     private func increaseCount() {
         StepperCountManager.shared.incrementCount(for: productId)
-        print("Increaed count",count)
         updateButtonAppearance()
     }
     
@@ -131,7 +145,6 @@ final class StepperButton: UIView {
     
     private func setupStackView() {
         addSubview(containerStackView)
-        
     }
     
     private func setupConstraints() {
@@ -155,9 +168,13 @@ final class StepperButton: UIView {
             bottomAnchor: bottomAnchor
         )
     }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 extension StepperButton {
     func reset() {
+        isExpanded = false
         updateButtonAppearance()
         updateExpandButton()
     }

@@ -15,11 +15,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: scene)
-        let vc = ProductListingRouter.createModule()
-        //let navigationController = UINavigationController(rootViewController: vc)
-        window.makeKeyAndVisible()
-       
         
+        let vc = ProductListingRouter.createModule()
+        window.makeKeyAndVisible()
         window.rootViewController = vc
         self.window = window
     }

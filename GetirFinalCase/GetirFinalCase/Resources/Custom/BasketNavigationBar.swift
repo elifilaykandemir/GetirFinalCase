@@ -1,19 +1,17 @@
 //
-//  CustonNavigationBar.swift
+//  BasketNavigationBar.swift
 //  GetirFinalCase
 //
-//  Created by Elif İlay KANDEMİR on 18.04.2024.
+//  Created by Elif İlay KANDEMİR on 22.04.2024.
 //
+
+import Foundation
 import UIKit
 
-final class CustomNavigationBar: UIView {
+final class BasketNavigationBar: UIView {
     
-    var onCartButtonTapped: (() -> Void)?
+    var onTrashButtonTapped: (() -> Void)?
     var onCloseTapped: (() -> Void)?
-    
-    func updateCartVisibility(shouldShowCartButton: Bool) {
-        cartButton.isHidden = !shouldShowCartButton
-    }
     
     private lazy var titleLabel : UILabel = {
         let label = UILabel()
@@ -25,10 +23,10 @@ final class CustomNavigationBar: UIView {
         return label
     }()
     
-    private lazy var cartButton : CartButton = {
-        let button = CartButton()
-        button.isHidden = true
-        button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cartButtonTapped)))
+    private lazy var trashButton : UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "trash", withConfiguration: UIImage.SymbolConfiguration(pointSize: 18, weight: .bold))?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+        button.addTarget(self, action: #selector(trashButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -40,20 +38,11 @@ final class CustomNavigationBar: UIView {
         return button
     }()
     
-    init(title: String, showCloseButton: Bool = false) {
+    init(title: String) {
         super.init(frame: .zero)
         backgroundColor = .primary
-        
         titleLabel.text = title
         setupLayout()
-        if showCloseButton {
-            addSubview(closeButton)
-            closeButton.setupConstraints(
-                leadingAnchor: self.leadingAnchor,
-                leadingConstant: 8,
-                centerYAnchor: self.centerYAnchor
-            )
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -61,28 +50,28 @@ final class CustomNavigationBar: UIView {
     }
     
     private func setupLayout() {
+        addSubview(closeButton)
         addSubview(titleLabel)
-        addSubview(cartButton)
+        addSubview(trashButton)
         
+        closeButton.setupConstraints(
+            leadingAnchor: self.leadingAnchor,
+            leadingConstant: 16,
+            centerYAnchor: self.centerYAnchor
+        )
         titleLabel.setupConstraints(
             centerYAnchor: self.centerYAnchor,
             centerXAnchor:self.centerXAnchor
         )
         titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        cartButton.setupConstraints(
-            topAnchor: topAnchor,
-            trailingAnchor: trailingAnchor,trailingConstant: -8,
-            bottomAnchor: bottomAnchor
+        trashButton.setupConstraints(
+            trailingAnchor: trailingAnchor,trailingConstant: -16,
+            centerYAnchor: centerYAnchor
         )
     }
     
-    func updateCartAmount(to amount: Double) {
-        let formattedAmount = String(format: "₺%.2f", amount)
-        cartButton.updatePrice(to: formattedAmount)
-    }
-    
-    @objc private func cartButtonTapped() {
-        onCartButtonTapped?()
+    @objc private func trashButtonTapped() {
+        onTrashButtonTapped?()
     }
     
     @objc private func closeButtonTapped() {

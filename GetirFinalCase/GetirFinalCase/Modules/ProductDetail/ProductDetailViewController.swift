@@ -68,9 +68,9 @@ final class ProductDetailViewController: UIViewController {
         )
         addBasketView.setupConstraints(
             leadingAnchor: customView.leadingAnchor,
-            topAnchor: contentView.bottomAnchor,topConstant: 320,
             trailingAnchor: customView.trailingAnchor,
-            bottomAnchor: customView.bottomAnchor
+            bottomAnchor: customView.bottomAnchor,
+            height: 98
         )
     }
 }

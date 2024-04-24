@@ -31,6 +31,12 @@ final class StepperCountManager {
         setCount(for: productId, to: max(currentCount - 1, 0))
         
     }
+    func resetAllCounts() {
+        let allProductIds = Array(counts.keys)
+        for productId in allProductIds {
+            setCount(for: productId, to: 0)
+        }
+    }
     private func postNotification(for productId: String) {
         NotificationCenter.default.post(name: .stepperCountDidChange, object: nil, userInfo: ["productId": productId, "newCount": getCount(for: productId)])
     }

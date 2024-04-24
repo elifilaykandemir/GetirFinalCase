@@ -40,7 +40,6 @@ final class ProductDetailPresenter {
 }
 
 extension ProductDetailPresenter:ProductDetailPresenterProtocol {
-
     
     func load() {
         passedProductID()
@@ -50,11 +49,9 @@ extension ProductDetailPresenter:ProductDetailPresenterProtocol {
         displayProductDetails()
         displayImage()
         updateCartButtonVisibility()
-        
     }
     
     func viewDidLoad() {
-        
         NotificationCenter.default.addObserver(self, selector: #selector(handleStepperChange(_:)), name: .stepperCountDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(basketUpdated), name: .basketDidUpdate, object: nil)
         load()
@@ -73,9 +70,10 @@ extension ProductDetailPresenter:ProductDetailPresenterProtocol {
     
     private func displayProductDetails() {
         if let product = product{
-            view?.displayProductDetail(priceText: product.priceText,
-                                       productText: product.name,
-                                       attText: product.attribute ?? "")
+            view?.displayProductDetail(
+                priceText: product.priceText,
+                productText: product.name,
+                attText: product.attribute ?? "")
         }
     }
     private func displayImage() {
@@ -85,8 +83,7 @@ extension ProductDetailPresenter:ProductDetailPresenterProtocol {
             print("Image not found")
         }
     }
-
-  
+    
     func cartUpdated(_ price: Double) {
         DispatchQueue.main.async { [weak self] in
             self?.view?.refreshCartAmount(price)
@@ -108,7 +105,7 @@ extension ProductDetailPresenter:ProductDetailPresenterProtocol {
         let displayCartButton = BasketManager.shared.total > 0
         view?.updateCartVisibility(shouldShowCartButton: displayCartButton)
     }
-
+    
 }
 extension ProductDetailPresenter {
     
@@ -119,9 +116,8 @@ extension ProductDetailPresenter {
             return
         }
         product?.quantity = newCount
-       
-        
     }
+    
     @objc private func basketUpdated(notification: Notification) {
         if let newPrice = notification.userInfo?["newPrice"] as? Double {
             cartUpdated(newPrice)
@@ -129,4 +125,3 @@ extension ProductDetailPresenter {
         }
     }
 }
-

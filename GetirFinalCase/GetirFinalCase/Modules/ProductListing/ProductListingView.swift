@@ -18,6 +18,7 @@ protocol ProductListingViewProtocol: AnyObject {
     func refreshCartAmount(_ amount: Double)
     func setupNavBar()
     func configureCollectionView()
+    func updateCartVisibility(shouldShowCartButton: Bool)
 }
 
 final class ProductListingViewController: UIViewController {
@@ -156,7 +157,7 @@ extension ProductListingViewController: ProductListingViewProtocol {
             leadingAnchor: view.leadingAnchor,
             topAnchor: view.safeAreaLayoutGuide.topAnchor,
             trailingAnchor: view.trailingAnchor,
-            height: 24
+            height: 34
         )
     }
     
@@ -175,10 +176,17 @@ extension ProductListingViewController: ProductListingViewProtocol {
     func refreshCartAmount(_ amount: Double) {
         DispatchQueue.main.async { [weak self] in
             self?.customNavBar.updateCartAmount(to: amount)
+            self?.customNavBar.updateCartVisibility(shouldShowCartButton: amount > 0)
         }
     }
     func cartButtonTapped() {
         presenter.didTapCartButton()
+    }
+    
+    func updateCartVisibility(shouldShowCartButton: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            self?.customNavBar.updateCartVisibility(shouldShowCartButton: shouldShowCartButton)
+        }
     }
     
 }

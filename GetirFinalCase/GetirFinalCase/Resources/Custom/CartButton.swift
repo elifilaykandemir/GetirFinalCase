@@ -1,11 +1,12 @@
 import UIKit
 
-final class CartButton: UIButton {
+final class CartButton: UIView {
+    
+    var onCardButtonTapped: (() -> Void)?
     
     private lazy var iconImageView : UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "basket", withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .bold))?.withTintColor(.primary, renderingMode: .alwaysOriginal)
-        
         return imageView
     }()
     
@@ -14,7 +15,6 @@ final class CartButton: UIButton {
         label.textColor = UIColor.primary
         label.backgroundColor = .primaryGray
         label.clipsToBounds = true
-        label.layer.cornerRadius = 5
         label.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
         label.textAlignment = .center
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -27,7 +27,6 @@ final class CartButton: UIButton {
         stackView.axis = .horizontal
         stackView.spacing = 8
         stackView.alignment = .center
-
         return stackView
     }()
     
@@ -43,7 +42,8 @@ final class CartButton: UIButton {
     
     private func configureButton() {
         layer.cornerRadius = 8
-        layer.borderWidth = 1
+        layer.borderWidth = 2
+        layer.borderColor = UIColor.white.cgColor
         backgroundColor = .white
         clipsToBounds = true
     }
@@ -51,9 +51,9 @@ final class CartButton: UIButton {
     private func configureStackView() {
         addSubview(stackView)
         priceLabel.setupConstraints(
-            topAnchor: topAnchor,topConstant: -1,
-            trailingAnchor: trailingAnchor,trailingConstant: -1,
-            bottomAnchor: bottomAnchor,bottomConstant: 1
+            topAnchor: topAnchor,topConstant: -4,
+            trailingAnchor: trailingAnchor,trailingConstant: -2,
+            bottomAnchor: bottomAnchor,bottomConstant: 4
         )
         stackView.setupConstraints(
             leadingAnchor: leadingAnchor, leadingConstant:12,
@@ -62,7 +62,7 @@ final class CartButton: UIButton {
             bottomAnchor: bottomAnchor,bottomConstant: -5
         )
     }
-   
+    
     func updatePrice(to newPrice: String) {
         DispatchQueue.main.async {
             self.priceLabel.text = newPrice
